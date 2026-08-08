@@ -1,3 +1,4 @@
+
 {% extends "base.html" %}
 {% block title %}Dashboard — GreenProof{% endblock %}
 
@@ -69,9 +70,11 @@
 
   {% set total_complete = namespace(v=0) %}
   {% set total_stages = namespace(v=0) %}
+  {% set total_scans = namespace(v=0) %}
   {% for product in products %}
     {% set total_complete.v = total_complete.v + (product.stages | selectattr('is_complete') | list | length) %}
     {% set total_stages.v = total_stages.v + (product.stages | length) %}
+    {% set total_scans.v = total_scans.v + (product.scan_count or 0) %}
   {% endfor %}
   {% set pct = ((total_complete.v / total_stages.v * 100) if total_stages.v else 0) | round | int %}
 
@@ -122,6 +125,9 @@
       <span class="stat-note">Being traced end-to-end</span>
     </div>
 
+    <!-- Total scans state -->
+
+
   </div>
 
   <div class="table-card">
@@ -145,6 +151,7 @@
           <th class="sortable" data-sort="date">Created <span class="sort-arrow">↕</span></th>
           <th>Supply Chain</th>
           <th>Carbon Card</th>
+          <th class="sortable" data-sort="scans" title="Times scanned">Scans <span class="sort-arrow">↕</span></th>
           <th></th>
         </tr>
       </thead>
@@ -185,6 +192,12 @@
             {% else %}
               <span style="font-size:0.78rem;color:var(--mid);">—</span>
             {% endif %}
+          </td>
+          <td onclick="event.stopPropagation()" class="product-scans" data-scans="{{ product.scan_count or 0 }}" style="text-align:center;">
+            <span class="scan-badge {% if (product.scan_count or 0) > 0 %}scan-badge--active{% endif %}">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><line x1="7" y1="12" x2="17" y2="12"/></svg>
+              {{ product.scan_count or 0 }}
+            </span>
           </td>
           <td onclick="event.stopPropagation()">
             <form method="POST"
@@ -274,6 +287,10 @@
           av = a.querySelector('.product-name').textContent.trim();
           bv = b.querySelector('.product-name').textContent.trim();
           return asc ? av.localeCompare(bv) : bv.localeCompare(av);
+        } else if(key === 'scans'){
+          av = parseInt(a.querySelector('.product-scans')?.dataset.scans || '0', 10);
+          bv = parseInt(b.querySelector('.product-scans')?.dataset.scans || '0', 10);
+          return asc ? av - bv : bv - av;
         } else {
           av = new Date(a.querySelector('.product-date').textContent.trim());
           bv = new Date(b.querySelector('.product-date').textContent.trim());

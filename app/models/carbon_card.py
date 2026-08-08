@@ -23,3 +23,4 @@ class CarbonCard(db.Model):
 
     def __repr__(self):
         return f'<CarbonCard product={self.product_id} total={self.total_credits}>'
+    

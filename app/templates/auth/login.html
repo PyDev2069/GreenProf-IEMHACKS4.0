@@ -1,53 +1,140 @@
 {% extends "base.html" %}
 {% block title %}Log in — GreenProof{% endblock %}
 
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
+
 {% block body %}
-<div class="auth-wrapper">
-  <div class="auth-card">
-    <h1>Welcome back</h1>
-    <p class="subtitle">Log in to your GreenProof account.</p>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <ul class="flash-list">
-          {% for category, message in messages %}
-            <li class="flash flash-{{ category }}">{{ message }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
+<div class="login-page">
 
-    <form method="POST" action="{{ url_for('auth.login') }}" novalidate>
-      <div class="form-group">
-        <label class="form-label" for="email">Email</label>
-        <input class="form-input" type="email" id="email" name="email"
-               placeholder="you@example.com"
-               value="{{ email or '' }}"
-               autocomplete="email" required />
-      </div>
+    <!-- LEFT IMAGE SECTION -->
+    <div class="login-image">
 
-      <div class="form-group">
-        <label class="form-label" for="password">Password</label>
-        <input class="form-input" type="password" id="password" name="password"
-               placeholder="••••••••"
-               autocomplete="current-password" required />
-      </div>
+        <div class="image-overlay"></div>
 
-      <a href="{{ url_for('auth.forgot_password') }}" class="forgot-link">
-        Forgot password?
-      </a>
+        <div class="image-content">
 
-      <div class="checkbox-row">
-        <input type="checkbox" id="remember" name="remember" />
-        <label for="remember">Remember me</label>
-      </div>
+            <a href="{{ url_for('main.home') }}" class="brand">
+                <span class="brand-icon">⬡</span>
+                <span>GreenProof</span>
+            </a>
 
-      <button type="submit" class="btn btn-primary btn-full">Log in</button>
-    </form>
+            <span class="eyebrow">
+                VERIFIED SUPPLY CHAIN
+            </span>
 
-    <p class="auth-footer">
-      No account? <a href="{{ url_for('auth.signup') }}">Sign up</a>
-    </p>
-  </div>
+            <h1>
+                Sustainability<br>
+                begins with<br>
+                <span>transparency.</span>
+            </h1>
+
+            <p>
+                Track suppliers, calculate emissions,
+                and generate trusted eco-labels that
+                consumers can verify.
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- RIGHT FORM -->
+    <div class="login-form-section">
+
+        <div class="login-card">
+
+            <h2>Welcome back</h2>
+
+            <p class="subtitle">
+                Log in to your GreenProof account.
+            </p>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+              <ul class="flash-list">
+                {% for category, message in messages %}
+                <li class="flash flash-{{ category }}">
+                    {{ message }}
+                </li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+            {% endwith %}
+
+            <form method="POST"
+                  action="{{ url_for('auth.login') }}"
+                  novalidate>
+
+                <div class="form-group">
+
+                    <label>Email</label>
+
+                    <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        placeholder="you@example.com"
+                        value="{{ email or '' }}"
+                        autocomplete="email"
+                        required>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Password</label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="••••••••"
+                        autocomplete="current-password"
+                        required>
+
+                </div>
+
+                <div class="options-row">
+
+                    <label class="remember">
+
+                        <input
+                            type="checkbox"
+                            name="remember">
+
+                        Remember me
+
+                    </label>
+
+                    <a href="{{ url_for('auth.forgot_password') }}">
+                        Forgot password?
+                    </a>
+
+                </div>
+
+                <button class="login-btn">
+                    Log In →
+                </button>
+
+            </form>
+
+            <p class="bottom-text">
+
+                Don't have an account?
+
+                <a href="{{ url_for('auth.signup') }}">
+                    Create one
+                </a>
+
+            </p>
+
+        </div>
+
+    </div>
+
 </div>
+
 {% endblock %}

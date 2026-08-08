@@ -1,0 +1,665 @@
+
+{% extends "base.html" %}
+{% block title %}Carbon Card — {{ product.name }} — GreenProof{% endblock %}
+
+{% block head %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+/* ═══════════════════════════════════════════════════
+   CARBON CARD — PREMIUM DARK THEME
+   ═══════════════════════════════════════════════════ */
+:root {
+  --cc-bg:          #0b1510;
+  --cc-surface:     #111d15;
+  --cc-surface-2:   #172214;
+  --cc-border:      #1e3222;
+  --cc-border-2:    #283e2c;
+  --cc-ink:         #e8f5ee;
+  --cc-ink-2:       #b8d4c2;
+  --cc-muted:       #6a9978;
+  --cc-accent:      #3ecf8e;
+  --cc-accent-dim:  rgba(62,207,142,0.12);
+  --cc-accent-glow: rgba(62,207,142,0.20);
+  --cc-amber:       #f5c842;
+  --cc-amber-dim:   rgba(245,200,66,0.10);
+  --cc-red:         #f87171;
+  --cc-red-dim:     rgba(248,113,113,0.10);
+  --cc-shadow-sm:   0 2px 10px rgba(0,0,0,0.3);
+  --cc-shadow-md:   0 8px 30px rgba(0,0,0,0.4);
+  --cc-shadow-lg:   0 24px 64px rgba(0,0,0,0.5);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+.cc-page {
+  min-height: 100vh;
+  background: var(--cc-bg);
+  color: var(--cc-ink);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-size: 16px;
+}
+
+/* ── Nav ── */
+.cc-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  height: 64px;
+  border-bottom: 1px solid var(--cc-border);
+  background: var(--cc-surface);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: var(--cc-shadow-sm);
+}
+.cc-nav-brand {
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
+  color: var(--cc-accent);
+  text-decoration: none;
+}
+.cc-nav-right { display: flex; gap: 10px; align-items: center; }
+.cc-btn {
+  font-size: 0.82rem;
+  font-family: inherit;
+  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: 8px;
+  border: 1.5px solid var(--cc-border-2);
+  background: transparent;
+  color: var(--cc-muted);
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.cc-btn:hover { border-color: var(--cc-accent); color: var(--cc-accent); background: var(--cc-accent-dim); }
+.cc-btn-primary {
+  background: var(--cc-accent);
+  border-color: var(--cc-accent);
+  color: #0b1510;
+  font-weight: 700;
+}
+.cc-btn-primary:hover {
+  background: #56e0a0;
+  border-color: #56e0a0;
+  color: #0b1510;
+}
+
+/* ── Public banner ── */
+.cc-public-banner {
+  text-align: center;
+  padding: 10px 20px;
+  background: var(--cc-accent-dim);
+  border-bottom: 1px solid var(--cc-border);
+  font-size: 0.82rem;
+  color: var(--cc-muted);
+}
+.cc-public-banner strong { color: var(--cc-accent); }
+
+/* ══════════════════════════════════════
+   HERO — wide, two-column, symmetric
+   ══════════════════════════════════════ */
+.cc-hero-wrap {
+  border-bottom: 1px solid var(--cc-border);
+  background: linear-gradient(160deg, var(--cc-surface) 0%, var(--cc-bg) 60%);
+}
+
+.cc-hero {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 48px 52px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 48px;
+  align-items: center;
+}
+
+.cc-hero-left { min-width: 0; }
+
+.cc-hero-eyebrow {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cc-accent);
+  font-weight: 700;
+  background: var(--cc-accent-dim);
+  border: 1px solid var(--cc-accent-glow);
+  padding: 5px 14px;
+  border-radius: 99px;
+  display: inline-block;
+  margin-bottom: 16px;
+}
+
+.cc-hero-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--cc-ink);
+  margin-bottom: 10px;
+}
+
+.cc-hero-desc {
+  color: var(--cc-muted);
+  font-size: 0.95rem;
+  line-height: 1.65;
+  max-width: 560px;
+  margin-bottom: 24px;
+}
+
+.cc-hero-pills {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cc-meta-pill {
+  font-size: 0.78rem;
+  padding: 6px 14px;
+  border-radius: 99px;
+  border: 1px solid var(--cc-border-2);
+  color: var(--cc-muted);
+  background: var(--cc-surface-2);
+}
+
+/* ── Rating block ── */
+.cc-rating-block {
+  background: var(--cc-surface-2);
+  border: 1.5px solid var(--cc-border-2);
+  border-radius: 24px;
+  padding: 36px 40px;
+  text-align: center;
+  flex-shrink: 0;
+  min-width: 200px;
+  box-shadow: var(--cc-shadow-md);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle glow behind rating */
+.cc-rating-block::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 30%, var(--cc-accent-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cc-rating-letter {
+  font-size: 5rem;
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  line-height: 1;
+  margin-bottom: 4px;
+  position: relative;
+}
+.cc-rating-letter.A-plus, .cc-rating-letter.A { color: var(--cc-accent); text-shadow: 0 0 40px var(--cc-accent-glow); }
+.cc-rating-letter.B { color: #86efac; }
+.cc-rating-letter.C { color: var(--cc-amber); }
+.cc-rating-letter.D { color: var(--cc-red); }
+
+.cc-rating-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cc-muted);
+  margin-bottom: 20px;
+}
+
+.cc-rating-divider {
+  width: 40px;
+  height: 1px;
+  background: var(--cc-border-2);
+  margin: 0 auto 18px;
+}
+
+.cc-rating-total {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--cc-ink);
+  line-height: 1;
+}
+.cc-rating-unit {
+  font-size: 0.75rem;
+  color: var(--cc-muted);
+  margin-top: 5px;
+}
+
+/* ══════════════════════════════════════
+   BODY — 3-column on desktop
+   ══════════════════════════════════════ */
+.cc-body {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 48px 80px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 300px;
+  gap: 32px;
+  align-items: start;
+}
+
+/* ── Section labels ── */
+.cc-section-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cc-muted);
+  margin-bottom: 18px;
+  font-weight: 700;
+}
+
+/* ── Left: Stage breakdown ── */
+.cc-breakdown-col { grid-column: 1 / 3; }
+.cc-breakdown { display: flex; flex-direction: column; }
+
+.cc-stage {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--cc-border);
+  position: relative;
+}
+.cc-stage:last-child { border-bottom: none; }
+
+.cc-stage-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  width: 28px;
+  padding-top: 5px;
+}
+.cc-stage-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--cc-accent);
+  box-shadow: 0 0 8px var(--cc-accent-glow);
+  flex-shrink: 0;
+}
+.cc-stage-line {
+  width: 1px;
+  background: var(--cc-border-2);
+  margin-top: 7px;
+  min-height: 28px;
+  flex: 1;
+}
+
+.cc-stage-info { flex: 1; min-width: 0; }
+.cc-stage-type {
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cc-accent);
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+.cc-stage-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--cc-ink);
+  margin-bottom: 3px;
+}
+.cc-stage-location {
+  font-size: 0.8rem;
+  color: var(--cc-muted);
+  margin-bottom: 10px;
+}
+.cc-stage-reason {
+  font-size: 0.83rem;
+  color: var(--cc-ink-2);
+  line-height: 1.6;
+  padding: 10px 14px;
+  background: var(--cc-accent-dim);
+  border-left: 2px solid var(--cc-accent);
+  border-radius: 0 6px 6px 0;
+}
+
+.cc-stage-credits {
+  text-align: right;
+  flex-shrink: 0;
+  min-width: 100px;
+  padding-top: 2px;
+}
+.cc-credits-value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--cc-ink);
+  line-height: 1;
+}
+.cc-credits-unit {
+  font-size: 0.68rem;
+  color: var(--cc-muted);
+  margin-top: 3px;
+}
+.cc-credits-bar {
+  margin-top: 10px;
+  height: 3px;
+  background: var(--cc-border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.cc-credits-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--cc-accent), #86efac);
+  border-radius: 3px;
+  transition: width 0.8s ease;
+}
+
+/* ── Total row ── */
+.cc-total-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding: 20px 24px;
+  background: var(--cc-surface-2);
+  border: 1.5px solid var(--cc-border-2);
+  border-radius: 14px;
+  box-shadow: var(--cc-shadow-sm);
+}
+.cc-total-label {
+  font-size: 0.8rem;
+  color: var(--cc-muted);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.cc-total-value {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--cc-accent);
+  line-height: 1;
+}
+.cc-total-unit {
+  font-size: 0.75rem;
+  color: var(--cc-muted);
+  margin-left: 5px;
+}
+
+/* ── Right sidebar ── */
+.cc-sidebar { display: flex; flex-direction: column; gap: 18px; }
+
+.cc-card {
+  background: var(--cc-surface-2);
+  border: 1.5px solid var(--cc-border-2);
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: var(--cc-shadow-sm);
+}
+
+.cc-card-eyebrow {
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cc-muted);
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.cc-rec-icon { font-size: 1.5rem; margin-bottom: 10px; }
+.cc-rec-text {
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: var(--cc-ink-2);
+}
+
+/* QR */
+#cc-qr-code {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+#cc-qr-code canvas,
+#cc-qr-code img {
+  border-radius: 10px;
+  background: white;
+  padding: 10px;
+}
+.cc-qr-hint {
+  font-size: 0.75rem;
+  color: var(--cc-muted);
+  line-height: 1.5;
+  text-align: center;
+  margin-bottom: 12px;
+}
+.cc-share-link {
+  padding: 9px 12px;
+  background: var(--cc-accent-dim);
+  border: 1px solid var(--cc-border-2);
+  border-radius: 8px;
+  font-size: 0.72rem;
+  color: var(--cc-muted);
+  word-break: break-all;
+  cursor: pointer;
+  transition: border-color 0.15s;
+  text-align: center;
+}
+.cc-share-link:hover { border-color: var(--cc-accent); color: var(--cc-accent); }
+
+/* Generated badge */
+.cc-generated {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px 18px;
+  background: var(--cc-accent-dim);
+  border: 1px solid var(--cc-border-2);
+  border-radius: 12px;
+  font-size: 0.76rem;
+  color: var(--cc-muted);
+  line-height: 1.5;
+}
+.cc-generated-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--cc-accent);
+  flex-shrink: 0;
+  margin-top: 4px;
+  box-shadow: 0 0 6px var(--cc-accent-glow);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1100px) {
+  .cc-body {
+    grid-template-columns: 1fr 280px;
+    padding: 40px 32px 60px;
+  }
+  .cc-breakdown-col { grid-column: 1 / 2; }
+}
+
+@media (max-width: 800px) {
+  .cc-hero { padding: 40px 24px 36px; grid-template-columns: 1fr; gap: 32px; }
+  .cc-rating-block {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    text-align: left;
+    padding: 24px 28px;
+    border-radius: 16px;
+  }
+  .cc-rating-block::before { display: none; }
+  .cc-rating-letter { font-size: 3.5rem; }
+  .cc-rating-divider { display: none; }
+  .cc-body { grid-template-columns: 1fr; padding: 28px 24px 60px; gap: 24px; }
+  .cc-breakdown-col { grid-column: 1; }
+  .cc-nav { padding: 0 20px; height: 58px; }
+  .cc-hero-title { font-size: 1.8rem; }
+}
+
+@media (max-width: 500px) {
+  .cc-nav-right .cc-btn:not(.cc-btn-primary) { display: none; }
+  .cc-stage { gap: 12px; }
+  .cc-credits-value { font-size: 1.1rem; }
+}
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="cc-page">
+
+  {% if is_public %}
+  <div class="cc-public-banner">
+    Verified by <strong>GreenProof</strong> · This carbon card is publicly accessible via QR code.
+  </div>
+  {% endif %}
+
+  <!-- Nav -->
+  <nav class="cc-nav">
+    <a href="{{ url_for('main.home') }}" class="cc-nav-brand">⬡ GreenProof</a>
+    <div class="cc-nav-right">
+      {% if not is_public %}
+        <a href="{{ url_for('products.supply_chain', product_id=product.id) }}" class="cc-btn">← Supply Chain</a>
+        <a href="{{ url_for('main.dashboard') }}" class="cc-btn">Dashboard</a>
+        <form method="POST" action="{{ url_for('carbon_card.generate', product_id=product.id) }}" style="display:inline;">
+          <button type="submit" class="cc-btn cc-btn-primary"
+                  onclick="return confirm('Regenerate the carbon card? This will overwrite the current one.')">
+            ↺ Regenerate
+          </button>
+        </form>
+      {% else %}
+        <a href="{{ url_for('main.home') }}" class="cc-btn cc-btn-primary">Learn about GreenProof →</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <div class="cc-hero-wrap">
+    <div class="cc-hero">
+      <div class="cc-hero-left">
+        <div class="cc-hero-eyebrow">Carbon Transparency Card</div>
+        <h1 class="cc-hero-title">{{ product.name }}</h1>
+        {% if product.description %}
+          <p class="cc-hero-desc">{{ product.description }}</p>
+        {% endif %}
+        <div class="cc-hero-pills">
+          <span class="cc-meta-pill">🗓 Generated {{ card.generated_at.strftime('%d %b %Y') }}</span>
+          <span class="cc-meta-pill">🔗 {{ breakdown.stages | length }} stages mapped</span>
+          <span class="cc-meta-pill">🌍 Full supply chain</span>
+        </div>
+      </div>
+
+      <!-- Rating block -->
+      <div class="cc-rating-block">
+        {% set r = breakdown.rating | default('—') %}
+        {% set cls = 'A-plus' if r == 'A+' else r %}
+        <div class="cc-rating-letter {{ cls }}">{{ r }}</div>
+        <div class="cc-rating-label">Carbon Rating</div>
+        <div class="cc-rating-divider"></div>
+        <div class="cc-rating-total">{{ "%.1f"|format(card.total_credits) }}</div>
+        <div class="cc-rating-unit">kg CO₂e total</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="cc-body">
+
+    <!-- Left + centre: stage breakdown spans 2 cols on desktop -->
+    <div class="cc-breakdown-col">
+      <div class="cc-section-label">Stage-by-stage breakdown</div>
+
+      {% set max_credits = breakdown.stages | map(attribute='carbon_credits_kg_co2e') | max %}
+
+      <div class="cc-breakdown">
+        {% for stage in breakdown.stages %}
+        {% set pct = ((stage.carbon_credits_kg_co2e / max_credits) * 100) | round | int if max_credits > 0 else 0 %}
+        <div class="cc-stage">
+          <div class="cc-stage-connector">
+            <div class="cc-stage-dot"></div>
+            {% if not loop.last %}<div class="cc-stage-line"></div>{% endif %}
+          </div>
+
+          <div class="cc-stage-info">
+            <div class="cc-stage-type">{{ stage.stage_type }}</div>
+            <div class="cc-stage-name">{{ stage.name }}</div>
+            {% if stage.location %}
+              <div class="cc-stage-location">📍 {{ stage.location }}</div>
+            {% endif %}
+            <div class="cc-stage-reason">{{ stage.reasoning }}</div>
+          </div>
+
+          <div class="cc-stage-credits">
+            <div class="cc-credits-value">{{ "%.1f"|format(stage.carbon_credits_kg_co2e) }}</div>
+            <div class="cc-credits-unit">kg CO₂e</div>
+            <div class="cc-credits-bar">
+              <div class="cc-credits-bar-fill" style="width:{{ pct }}%"></div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Total -->
+      <div class="cc-total-row">
+        <span class="cc-total-label">Total carbon credits required</span>
+        <span>
+          <span class="cc-total-value">{{ "%.1f"|format(card.total_credits) }}</span>
+          <span class="cc-total-unit">kg CO₂e</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Right: sidebar -->
+    <div class="cc-sidebar">
+
+      {% if breakdown.recommendation %}
+      <div class="cc-card">
+        <div class="cc-rec-icon">💡</div>
+        <div class="cc-card-eyebrow">Top Recommendation</div>
+        <div class="cc-rec-text">{{ breakdown.recommendation }}</div>
+      </div>
+      {% endif %}
+
+      <div class="cc-card">
+        <div class="cc-card-eyebrow">Scan to verify</div>
+        <div id="cc-qr-code"></div>
+        <div class="cc-qr-hint">
+          Anyone who scans this QR code can view this carbon transparency card — no login required.
+        </div>
+        <div class="cc-share-link" id="cc-share-url"
+             onclick="copyShareUrl()" title="Click to copy">
+          {{ share_url }}
+        </div>
+      </div>
+
+      <div class="cc-generated">
+        <div class="cc-generated-dot"></div>
+        <span>Analysis generated by local AI model via GreenProof on {{ card.generated_at.strftime('%d %b %Y at %H:%M') }}</span>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const shareUrl = {{ share_url | tojson }};
+  new QRCode(document.getElementById('cc-qr-code'), {
+    text: shareUrl,
+    width: 180,
+    height: 180,
+    colorDark: '#0b1510',
+    colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.H,
+  });
+});
+
+function copyShareUrl() {
+  const el = document.getElementById('cc-share-url');
+  navigator.clipboard.writeText(el.textContent.trim()).then(() => {
+    const orig = el.textContent;
+    el.textContent = '✓ Copied to clipboard!';
+    setTimeout(() => { el.textContent = orig; }, 1800);
+  });
+}
+</script>
+{% endblock %}

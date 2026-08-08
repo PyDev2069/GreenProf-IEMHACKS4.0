@@ -1,60 +1,129 @@
 {% extends "base.html" %}
 {% block title %}Create account — GreenProof{% endblock %}
 
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/signup.css') }}">
+{% endblock %}
+
 {% block body %}
-<div class="auth-wrapper">
-  <div class="auth-card">
-    <h1>Create account</h1>
-    <p class="subtitle">Start tracing your supply chain today.</p>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <ul class="flash-list">
-          {% for category, message in messages %}
-            <li class="flash flash-{{ category }}">{{ message }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
+<div class="signup-page">
 
-    <form method="POST" action="{{ url_for('auth.signup') }}" novalidate>
-      <div class="form-group">
-        <label class="form-label" for="name">Full name</label>
-        <input class="form-input" type="text" id="name" name="name"
-               placeholder="Priya Sharma"
-               value="{{ name or '' }}"
-               autocomplete="name" required />
-      </div>
+    <!-- LEFT IMAGE SECTION -->
+    <div class="signup-image">
 
-      <div class="form-group">
-        <label class="form-label" for="email">Email</label>
-        <input class="form-input" type="email" id="email" name="email"
-               placeholder="you@example.com"
-               value="{{ email or '' }}"
-               autocomplete="email" required />
-      </div>
+        <div class="image-content">
 
-      <div class="form-group">
-        <label class="form-label" for="password">Password</label>
-        <input class="form-input" type="password" id="password" name="password"
-               placeholder="Min. 8 characters"
-               autocomplete="new-password" required />
-        <span class="form-hint">At least 8 characters.</span>
-      </div>
+            <a href="{{ url_for('main.home') }}" class="brand">
+                <span class="brand-icon">⬡</span>
+                <span>GreenProof</span>
+            </a>
 
-      <div class="form-group">
-        <label class="form-label" for="confirm">Confirm password</label>
-        <input class="form-input" type="password" id="confirm" name="confirm"
-               placeholder="••••••••"
-               autocomplete="new-password" required />
-      </div>
+            <span class="eyebrow">JOIN THE MOVEMENT</span>
 
-      <button type="submit" class="btn btn-primary btn-full">Create account</button>
-    </form>
+            <h1>
+                Every product<br>
+                has a <span>story</span><br>
+                worth proving.
+            </h1>
 
-    <p class="auth-footer">
-      Already have an account? <a href="{{ url_for('auth.login') }}">Log in</a>
-    </p>
-  </div>
+            <p>
+                Join brands using GreenProof to map suppliers,
+                calculate real emissions, and earn consumer trust
+                with verified eco-labels.
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- RIGHT FORM -->
+    <div class="signup-form-section">
+
+        <div class="signup-card">
+
+            <h2>Create account</h2>
+
+            <p class="subtitle">
+                Start tracing your supply chain today.
+            </p>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+              <ul class="flash-list">
+                {% for category, message in messages %}
+                <li class="flash flash-{{ category }}">
+                    {{ message }}
+                </li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+            {% endwith %}
+
+            <form method="POST" action="{{ url_for('auth.signup') }}" novalidate>
+
+                <div class="form-group">
+                    <label for="name">Full name</label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Priya Sharma"
+                        value="{{ name or '' }}"
+                        autocomplete="name"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="you@example.com"
+                        value="{{ email or '' }}"
+                        autocomplete="email"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Min. 8 characters"
+                        autocomplete="new-password"
+                        required>
+                    <span class="form-hint">At least 8 characters.</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm">Confirm password</label>
+                    <input
+                        type="password"
+                        id="confirm"
+                        name="confirm"
+                        placeholder="••••••••"
+                        autocomplete="new-password"
+                        required>
+                </div>
+
+                <button type="submit" class="signup-btn">
+                    Create account →
+                </button>
+
+            </form>
+
+            <p class="bottom-text">
+                Already have an account?
+                <a href="{{ url_for('auth.login') }}">Log in</a>
+            </p>
+
+        </div>
+
+    </div>
+
 </div>
+
 {% endblock %}

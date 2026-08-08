@@ -1,0 +1,50 @@
+# Git
+.git
+.gitignore
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Local secrets — never bake into image
+.env
+.env.*
+!.env.example
+
+# SQLite database (use volume instead)
+instance/
+*.db
+*.sqlite
+*.sqlite3
+
+# Dev/test artefacts
+tests/
+.pytest_cache/
+htmlcov/
+.coverage
+*.log
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# DevOps files not needed inside the image
+Dockerfile
+docker-compose.yml
+Makefile
+nginx/
+.github/

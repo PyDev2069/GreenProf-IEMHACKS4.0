@@ -392,6 +392,12 @@ STAT CARDS — semantic states
     text-align:center;
 }
 
+/* scans stat card — teal/cyan accent */
+.stat-card--scans{
+    background:linear-gradient(135deg, #1a6b5a, #0e4d40);
+    box-shadow:0 10px 26px rgba(14,77,64,.25);
+}
+
 .stat-value{
     font-family:'Fraunces', serif;
     font-size:2rem;
@@ -852,6 +858,11 @@ DARK MODE
     box-shadow:0 10px 26px rgba(0,0,0,.35);
 }
 
+[data-theme="dark"] .stat-card--scans{
+    background:linear-gradient(135deg, #1a8a72, #0d5c4c);
+    box-shadow:0 10px 26px rgba(0,0,0,.35);
+}
+
 [data-theme="dark"] .stat-label,
 [data-theme="dark"] .stat-note{
     opacity:.92;
@@ -1102,4 +1113,24 @@ RESPONSIVE
     .product-desc{
         max-width:none;
     }
+}
+/* ── Scan badge ──────────────────────────────────────────────────── */
+.scan-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--mid);
+  background: var(--surface-2, #f3f4f6);
+  border: 1.5px solid var(--border, #e5e7eb);
+  border-radius: 99px;
+  padding: 3px 10px 3px 7px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.scan-badge--active {
+  background: #eaf6ec;
+  color: #2d7a3a;
+  border-color: #b6e0bc;
 }

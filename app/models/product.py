@@ -9,6 +9,7 @@ class Product(db.Model):
     name        = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text)
     created_at  = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    scan_count  = db.Column(db.Integer, default=0, nullable=False)
 
     stages = db.relationship('Stage', backref='product',
                              lazy=True, cascade='all, delete-orphan',
