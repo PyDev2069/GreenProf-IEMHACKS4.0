@@ -1,6 +1,6 @@
 # 🌱 GreenProf — Sustainable Supply Chain Traceability
 
-**GreenProof** is a sustainability platform designed to make product supply chains more **transparent, traceable, and eco-conscious**. 🌍  
+**GreenProf** is a sustainability platform designed to make product supply chains more **transparent, traceable, and eco-conscious**. 🌍  
 🔗 Track every stage — from **raw materials to processing, manufacturing, and shipping**.  
 📊 Record key details such as **origin, transport mode, distance, and courier information**.  
 🤖 Generate AI-powered **Carbon Cards** using a locally running **Ollama LLM**, including a sustainability rating and CO₂e estimate.  
@@ -30,7 +30,7 @@
 
 ### 🌱 Make Sustainability Visible. Make Trust Verifiable.
 
-**GreenProof** helps small businesses, product sellers, and emerging brands communicate the environmental impact of their products with greater transparency.
+**GreenProf** helps small businesses, product sellers, and emerging brands communicate the environmental impact of their products with greater transparency.
 
 From sourcing raw materials to manufacturing and delivery, GreenProof enables businesses to document their supply chain, estimate their carbon footprint, and turn complex sustainability data into simple, shareable **Carbon Cards**.
 
@@ -50,6 +50,8 @@ GreenProof can help businesses:
 
 ### 🎥 Product Pitch Deck
 
-▶️ **[Watch the GreenProof Demo](https://youtu.be/pqbD7czQtW0)**
+[![Watch the GreenProf Pitch Deck](https://img.youtube.com/vi/AbCd1234XYZ/maxresdefault.jpg)](https://www.youtube.com/watch?v=AbCd1234XYZ)
+
+▶️ **[Watch the GreenProf Pitch deck on YouTube](https://www.youtube.com/watch?v=AbCd1234XYZ)**
 
 
