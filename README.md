@@ -7,3 +7,21 @@
 📱 Share verified product footprints through **public token-based links and QR codes**.  
 📈 Monitor products through a **searchable dashboard, progress indicators, and notifications**.  
 🛠️ Built with **Flask, SQLAlchemy, Flask-Login, Jinja2, Vanilla JS**, and a custom **forest-green & gold UI** with light/dark mode.
+
+## 🛠️ Tech Stack
+
+### 💻 Development
+- **HTML5** — Structure and semantic markup
+- **CSS3** — Responsive styling and UI design
+- **JavaScript** — Client-side interactions and dynamic functionality
+- **Python** — Core application and backend logic
+- **Flask** — Web framework and REST API development
+- **Ollama** — Local LLM inference for AI-powered Carbon Cards
+
+### 🐳 Deployment & Infrastructure
+- **Docker** — Application containerization
+- **Render** — Planned platform for future deployment
+
+### 📋 Project Management & Documentation
+- **Jira** — Task tracking, sprint planning, and project management
+- **Confluence** — Project documentation and knowledge management
