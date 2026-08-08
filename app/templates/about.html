@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+{% block title %}About Us — GreenProof{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}" />
+{% endblock %}
+
+{% block body %}
+
+<!-- ── Navbar (same as home) ── -->
+<nav class="navbar">
+  <a href="{{ url_for('main.home') }}" class="navbar-brand">
+    <span class="brand-leaf">⬡</span> <h1 class="brand-name">GreenProof</h1>
+  </a>
+  <ul class="navbar-links">
+    <li><a href="{{ url_for('main.home') }}#how-it-works">How it Works</a></li>
+    <li><a href="{{ url_for('main.about') }}">About</a></li>
+    <li><a href="{{ url_for('main.home') }}#faq">FAQ</a></li>
+    <li><a href="{{ url_for('auth.login') }}" class="nav-login">Log In</a></li>
+    <li>
+      <a href="{{ url_for('auth.signup') }}" class="btn btn-primary btn-nav">
+        Get Started
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<main>
+
+  <!-- ── About Hero ── -->
+  <section class="about-hero">
+    <canvas id="leaf-canvas" aria-hidden="true"></canvas>
+
+    <div class="about-hero-inner">
+      <span class="hero-eyebrow">Our story</span>
+      <h1>
+        We built GreenProof because<br>
+        <span class="hero-highlight">claims aren't proof.</span>
+      </h1>
+      <p class="about-hero-sub">
+        Every "sustainably sourced" label makes a promise. Almost none of them show
+        their work. We set out to close that gap — one traceable supply chain at a time.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Mission ── -->
+  <section class="about-mission">
+    <div class="mission-grid">
+      <div class="mission-text">
+        <span class="section-eyebrow">Our mission</span>
+        <h2>Turn supply chain complexity into something anyone can verify.</h2>
+        <p>
+          Most sustainability claims today are self-reported, hard to check, and even
+          harder to trust. Brands want to prove their impact. Consumers want to believe
+          them. Auditors are stuck in the middle, chasing spreadsheets. GreenProof exists
+          to remove that friction — by making traceability the default, not a quarterly
+          scramble before an audit.
+        </p>
+        <p>
+          We think the future of sustainability isn't better marketing copy. It's better
+          data, presented plainly, that holds up under scrutiny — from a certifier, a
+          journalist, or a customer scanning a QR code in a store aisle.
+        </p>
+      </div>
+      <div class="mission-stats">
+        <div class="mission-stat-card">
+          <span class="mission-stat-number">3</span>
+          <span class="mission-stat-label">Steps from raw supplier data to a verified label</span>
+        </div>
+        <div class="mission-stat-card">
+          <span class="mission-stat-number">DEFRA</span>
+          <span class="mission-stat-label">2023 emissions factors — cited, not guessed</span>
+        </div>
+        <div class="mission-stat-card">
+          <span class="mission-stat-number">1</span>
+          <span class="mission-stat-label">Single source of truth for auditors and consumers alike</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── What we do (recap of product) ── -->
+  <section class="about-what" id="what-we-do">
+    <div class="features-header">
+      <span class="section-eyebrow">What GreenProof does</span>
+      <h2>One platform, from your supplier notes to your customer's phone.</h2>
+    </div>
+
+    <div class="about-what-grid">
+      <div class="about-what-card">
+        <div class="about-what-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>
+        </div>
+        <h3>Structured supply chains</h3>
+        <p>Raw supplier text — emails, spreadsheets, notes — gets parsed into a clean, stage-by-stage map of your product's journey. Raw material, processing, manufacturing, shipping: tracked and editable.</p>
+      </div>
+
+      <div class="about-what-card">
+        <div class="about-what-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3>Defensible emissions math</h3>
+        <p>Every carbon figure is calculated from cited factors, not estimated. When someone asks how a number was reached, there's a real answer waiting.</p>
+      </div>
+
+      <div class="about-what-card">
+        <div class="about-what-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h4v4H7z"/><path d="M13 7h4"/><path d="M13 11h4"/><path d="M7 15h10"/><path d="M7 19h10"/></svg>
+        </div>
+        <h3>A dashboard that stays honest</h3>
+        <p>Product owners see live progress across every stage of every product — what's verified, what's still incomplete — instead of a static PDF that goes stale the day it's exported.</p>
+      </div>
+
+      <div class="about-what-card">
+        <div class="about-what-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h3>A label consumers can scan</h3>
+        <p>The same underlying data that satisfies an auditor becomes a simple, scannable label — no separate marketing narrative sitting on top of the real numbers.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── What we've learned ── -->
+  <section class="about-learned">
+    <div class="learned-inner">
+      <span class="section-eyebrow section-eyebrow--light">What we've learned building this</span>
+      <h2>Traceability breaks down for boring reasons — not because brands don't care.</h2>
+      <div class="learned-points">
+        <div class="learned-point">
+          <span class="learned-number">01</span>
+          <p>Most sustainability data doesn't live in a clean database — it lives in emails, PDFs, and someone's memory. Any tool that assumes tidy structured input from day one will go unused.</p>
+        </div>
+        <div class="learned-point">
+          <span class="learned-number">02</span>
+          <p>Auditors and consumers are asking the same underlying question — "can you prove this?" — just at different levels of detail. One data model can serve both if it's designed honestly from the start.</p>
+        </div>
+        <div class="learned-point">
+          <span class="learned-number">03</span>
+          <p>Supply chains change constantly — a new supplier, a swapped material, a shipping route. A traceability tool that requires a rebuild every time something changes will always be a step behind reality.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA Banner (same as home) ── -->
+  <section class="cta-banner">
+    <canvas id="cta-canvas" aria-hidden="true"></canvas>
+    <div class="cta-inner">
+      <h2>Curious what your own<br>supply chain would show?</h2>
+      <a href="{{ url_for('auth.signup') }}" class="btn btn-glow btn-lg">
+        Create your free account
+        <span class="btn-arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<!-- ── Footer (same as home) ── -->
+<footer class="footer">
+  <div class="footer-top">
+
+    <div class="footer-col footer-col--brand">
+      <a href="{{ url_for('main.home') }}" class="footer-brand">
+        <span class="brand-leaf">⬡</span> GreenProof
+      </a>
+      <p class="footer-tagline">
+        Turning supply chain complexity into verified consumer trust — one label at a time.
+      </p>
+      <div class="footer-socials">
+        <a href="#" class="footer-social-link" aria-label="LinkedIn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+          </svg>
+        </a>
+        <a href="#" class="footer-social-link" aria-label="Twitter / X">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.259 5.63 5.905-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+        </a>
+        <a href="#" class="footer-social-link" aria-label="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-col-heading">Product</h4>
+      <ul class="footer-links">
+        <li><a href="{{ url_for('main.home') }}#how-it-works">How it works</a></li>
+        <li><a href="{{ url_for('main.about') }}">About us</a></li>
+        <li><a href="{{ url_for('auth.signup') }}">Get started</a></li>
+        <li><a href="{{ url_for('auth.login') }}">Log in</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-col-heading">Company</h4>
+      <ul class="footer-links">
+        <li><a href="{{ url_for('main.about') }}">About</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-col-heading">Legal</h4>
+      <ul class="footer-links">
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Cookie Policy</a></li>
+        <li><a href="#">Security</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 GreenProof. All rights reserved.</span>
+    <span class="footer-made">Built for honesty. Powered by real data.</span>
+  </div>
+</footer>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/home.js') }}"></script>
+{% endblock %}
