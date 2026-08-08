@@ -1,0 +1,276 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600&display=swap');
+
+:root{
+    --forest:#0d3d2b;
+    --forest2:#0a3024;
+    --mint:#3ecf8e;
+    --mint-dark:#2aa96f;
+    --cream:#f7f6f2;
+    --white:#ffffff;
+    --sage:#94a3a0;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html, body{
+    height:100%;
+    overflow:hidden;
+}
+
+body{
+    font-family:Inter,sans-serif;
+    background:var(--white);
+}
+
+.signup-page{
+    display:flex;
+    height:100vh;
+    width:100%;
+    overflow:hidden;
+}
+
+/* ============================
+LEFT IMAGE
+============================ */
+
+.signup-image{
+    flex:1;
+    position:relative;
+    background:
+        linear-gradient(rgba(10,48,36,.55), rgba(10,48,36,.8)),
+        url("https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1200&q=80");
+    background-size:cover;
+    background-position:center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+}
+
+.image-content{
+    position:relative;
+    z-index:2;
+    color:white;
+    width:75%;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:white;
+    text-decoration:none;
+    font-size:clamp(22px, 2vw, 30px);
+    font-family:Fraunces,serif;
+    margin-bottom:clamp(30px, 5vh, 70px);
+}
+
+.brand-icon{
+    color:var(--mint);
+}
+
+.eyebrow{
+    display:inline-block;
+    color:#e6cb75;
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.15);
+    padding:8px 18px;
+    border-radius:40px;
+    margin-bottom:clamp(14px, 2vh, 25px);
+    font-size:.78rem;
+    letter-spacing:.12em;
+}
+
+.image-content h1{
+    font-family:Fraunces,serif;
+    font-size:clamp(34px, 4.2vw, 64px);
+    line-height:1.08;
+    margin-bottom:clamp(14px, 2vh, 25px);
+}
+
+.image-content h1 span{
+    color:var(--mint);
+    font-style:italic;
+}
+
+.image-content p{
+    font-size:clamp(14px, 1.2vw, 18px);
+    color:rgba(255,255,255,.78);
+    line-height:1.7;
+    max-width:520px;
+}
+
+/* ============================
+RIGHT — plain, no card
+============================ */
+
+.signup-form-section{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--white);
+    height:100vh;
+    overflow:hidden;
+}
+
+.signup-card{
+    width:min(420px, 80%);
+    max-height:96vh;
+    overflow:hidden;
+}
+
+.signup-card h2{
+    font-family:Fraunces,serif;
+    font-size:clamp(26px, 2.6vw, 38px);
+    color:var(--forest);
+    margin-bottom:6px;
+}
+
+.subtitle{
+    color:#64726d;
+    margin-bottom:clamp(14px, 2.4vh, 24px);
+    line-height:1.5;
+    font-size:.92rem;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    margin-bottom:clamp(10px, 1.6vh, 16px);
+}
+
+.form-group label{
+    margin-bottom:6px;
+    font-size:.88rem;
+    font-weight:600;
+    color:var(--forest);
+}
+
+.form-group input{
+    height:48px;
+    border:1px solid #d8e1dd;
+    border-radius:10px;
+    padding:0 16px;
+    font-size:14.5px;
+    transition:.3s;
+    background:var(--cream);
+}
+
+.form-group input:focus{
+    outline:none;
+    border-color:var(--mint);
+    background:var(--white);
+    box-shadow:0 0 0 4px rgba(62,207,142,.12);
+}
+
+.form-hint{
+    margin-top:6px;
+    font-size:.78rem;
+    color:var(--sage);
+}
+
+.signup-btn{
+    width:100%;
+    height:50px;
+    border:none;
+    border-radius:10px;
+    background:var(--mint);
+    color:var(--forest);
+    font-size:15.5px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.3s;
+    margin-top:6px;
+}
+
+.signup-btn:hover{
+    transform:translateY(-2px);
+    background:#49dfa2;
+    box-shadow:0 10px 25px rgba(62,207,142,.35);
+}
+
+.bottom-text{
+    text-align:center;
+    margin-top:clamp(14px, 2vh, 22px);
+    color:#5d6764;
+    font-size:.9rem;
+}
+
+.bottom-text a{
+    color:var(--mint-dark);
+    font-weight:700;
+    text-decoration:none;
+}
+
+/* ============================
+FLASH
+============================ */
+
+.flash-list{
+    list-style:none;
+    margin-bottom:14px;
+}
+
+.flash{
+    padding:10px 14px;
+    border-radius:8px;
+    margin-bottom:8px;
+    font-size:.88rem;
+}
+
+.flash-success{
+    background:#d7ffe9;
+    color:#0d6b43;
+}
+
+.flash-danger{
+    background:#ffe0e0;
+    color:#b52d2d;
+}
+
+.flash-warning{
+    background:#fff5d7;
+    color:#946300;
+}
+
+/* ============================
+RESPONSIVE
+============================ */
+
+@media(max-width:950px){
+    html, body{ overflow:auto; }
+
+    .signup-page{
+        flex-direction:column;
+        height:auto;
+        min-height:100vh;
+    }
+
+    .signup-image{
+        min-height:240px;
+        flex:none;
+    }
+
+    .signup-form-section{
+        height:auto;
+        padding:32px 0;
+    }
+
+    .signup-card{
+        width:88%;
+        max-height:none;
+    }
+
+    .image-content{
+        width:85%;
+    }
+
+    .image-content h1{
+        font-size:34px;
+    }
+}
