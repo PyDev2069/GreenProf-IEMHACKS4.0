@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Add Product — GreenProof{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/add.css') }}">
+{% endblock %}
+
+{% block body %}
+<script>document.body.classList.add('add-page')</script>
+
+<nav class="dashboard-nav">
+  <a href="{{ url_for('main.dashboard') }}" class="brand">GreenProof</a>
+  <div class="nav-right">
+    <a href="{{ url_for('main.dashboard') }}" class="btn btn-outline">← Back</a>
+  </div>
+</nav>
+
+<main class="dashboard-main">
+
+  <span class="add-step">Step 1 of 2 — Product details</span>
+  <h1>Add a product</h1>
+  <p>Give it a name and description. You'll build the supply chain next.</p>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <ul class="flash-list">
+        {% for category, message in messages %}
+          <li class="flash flash-{{ category }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
+  <div class="form-card">
+    <form method="POST" action="{{ url_for('products.add') }}">
+      <div class="form-group">
+        <label class="form-label" for="name">Product name</label>
+        <input class="form-input" type="text" id="name" name="name"
+               placeholder="e.g. Classic Organic Tee" required autofocus />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="description">Description</label>
+        <textarea class="form-input form-textarea" id="description" name="description"
+                  placeholder="A short description of what this product is..."
+                  rows="3"></textarea>
+      </div>
+      <hr class="form-divider">
+      <button type="submit" class="btn btn-primary">Create product</button>
+    </form>
+  </div>
+
+  <div class="add-hint">
+    <div class="add-hint-icon">✦</div>
+    <span>After saving you'll be taken to the supply chain builder to map each stage.</span>
+  </div>
+
+</main>
+{% endblock %}
