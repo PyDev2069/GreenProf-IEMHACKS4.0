@@ -50,8 +50,8 @@ GreenProof can help businesses:
 
 ### 🎥 Product Pitch Deck
 
-<a href="https://www.youtube.com/watch?v=AbCd1234XYZ">
-  <img src="https://img.youtube.com/vi/AbCd1234XYZ/maxresdefault.jpg" 
+<a href="[https://www.youtube.com/watch?v=AbCd1234XYZ](https://youtu.be/pqbD7czQtW0)">
+  <img src="maxresdefault.jpg" 
        alt="GreenProf Pitch Deck" width="800">
 </a>
 
