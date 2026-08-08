@@ -1,0 +1,1664 @@
+{% extends "base.html" %}
+{% block title %}Supply Chain — {{ product.name }} — GreenProof{% endblock %}
+
+{% block head %}
+<style>
+/* ═══════════════════════════════════════════════════
+   SUPPLY CHAIN PAGE — PREMIUM LIGHT + DARK THEMES
+   ═══════════════════════════════════════════════════ */
+
+/* ── Light mode tokens (Green + White + Brown + Yellow palette) ── */
+:root {
+  --sc-bg:           #faf8f3;
+  --sc-surface:      #ffffff;
+  --sc-surface-2:    #f5f0e8;
+  --sc-border:       #e2d9c8;
+  --sc-border-2:     #cfc5b0;
+  --sc-ink:          #2a1f0e;
+  --sc-ink-2:        #4a3828;
+  --sc-muted:        #7a6850;
+  --sc-accent:       #2d7a3a;
+  --sc-accent-light: #eaf6ec;
+  --sc-accent-glow:  rgba(45,122,58,0.13);
+  --sc-amber:        #c47b00;
+  --sc-amber-bg:     #fff8e1;
+  --sc-amber-border: #f5d66a;
+  --sc-red:          #c0392b;
+  --sc-red-bg:       #fdf0ef;
+  --sc-progress-bg:  #e8dfc8;
+  --sc-progress-fill: #2d7a3a;
+  --sc-shadow-sm:    0 2px 8px rgba(60,40,10,0.07);
+  --sc-shadow-md:    0 8px 28px rgba(60,40,10,0.10);
+  --sc-shadow-lg:    0 20px 56px rgba(60,40,10,0.15);
+  --sc-num-border:   #cfc5b0;
+  --sc-num-done-bg:  #2d7a3a;
+  --sc-nav-bg:       #ffffff;
+  --sc-sticky-bg:    rgba(250,248,243,0.96);
+  --sc-modal-overlay: rgba(30,20,5,0.5);
+  --sc-hint-bg:      #f5f0e8;
+  --sc-hint-border:  #e2d9c8;
+  --sc-divider:      #e2d9c8;
+  --sc-drag-color:   #c4b89a;
+  --sc-badge-bg:     #f5f0e8;
+  --sc-badge-done-bg: #2d7a3a;
+  --sc-badge-done-color: #ffffff;
+  --sc-summary-bg:   #fdf9f0;
+  --sc-complete-accent: #2d7a3a;
+  --sc-section-icon-bg: #eaf6ec;
+  /* Yellow accent tokens */
+  --sc-yellow:       #e6b800;
+  --sc-yellow-bg:    #fffde7;
+  --sc-yellow-border: #f5d66a;
+  /* Brown accent tokens */
+  --sc-brown:        #6b4226;
+  --sc-brown-light:  #f5ece3;
+}
+
+/* ── Override body background so global style.css doesn't bleed through ── */
+body { background: var(--sc-bg, #faf8f3) !important; }
+
+
+
+/* ── Manual dark mode toggle class (applied to #scPage div) ── */
+#scPage.dark-mode {
+    --sc-bg:           #0e1410;
+    --sc-surface:      #161d18;
+    --sc-surface-2:    #1d2820;
+    --sc-border:       #273322;
+    --sc-border-2:     #324030;
+    --sc-ink:          #edf5f0;
+    --sc-ink-2:        #c9dbd1;
+    --sc-muted:        #7aab8a;
+    --sc-accent:       #3ecf8e;
+    --sc-accent-light: rgba(62,207,142,0.10);
+    --sc-accent-glow:  rgba(62,207,142,0.15);
+    --sc-amber:        #f0b040;
+    --sc-amber-bg:     rgba(240,176,64,0.10);
+    --sc-amber-border: rgba(240,176,64,0.25);
+    --sc-red:          #f87171;
+    --sc-red-bg:       rgba(248,113,113,0.10);
+    --sc-progress-bg:  #273322;
+    --sc-progress-fill: #3ecf8e;
+    --sc-shadow-sm:    0 2px 8px rgba(0,0,0,0.3);
+    --sc-shadow-md:    0 8px 28px rgba(0,0,0,0.4);
+    --sc-shadow-lg:    0 20px 56px rgba(0,0,0,0.5);
+    --sc-num-border:   #324030;
+    --sc-num-done-bg:  #3ecf8e;
+    --sc-nav-bg:       #111710;
+    --sc-sticky-bg:    rgba(14,20,16,0.96);
+    --sc-modal-overlay: rgba(0,0,0,0.7);
+    --sc-hint-bg:      #1a2318;
+    --sc-hint-border:  #273322;
+    --sc-divider:      #1f2d22;
+    --sc-drag-color:   #3d5545;
+    --sc-badge-bg:     #1d2820;
+    --sc-badge-done-bg: #3ecf8e;
+    --sc-badge-done-color: #0e1410;
+    --sc-summary-bg:   #141c15;
+    --sc-complete-accent: #3ecf8e;
+    --sc-section-icon-bg: rgba(62,207,142,0.10);
+}
+
+/* ── Page base ── */
+.sc-page {
+  background: var(--sc-bg);
+  min-height: 100vh;
+  color: var(--sc-ink);
+  transition: background 0.3s, color 0.3s;
+}
+
+/* ── Nav ── */
+.sc-nav {
+  background: var(--sc-nav-bg);
+  border-bottom: 1px solid var(--sc-border);
+  padding: 0 32px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--sc-shadow-sm);
+  transition: background 0.3s, border-color 0.3s;
+}
+
+.sc-nav-brand {
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -0.02em;
+  color: var(--sc-accent);
+  text-decoration: none;
+}
+
+.sc-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sc-btn-nav {
+  font-size: 0.82rem;
+  padding: 7px 16px;
+  border-radius: 8px;
+  border: 1.5px solid var(--sc-border);
+  background: transparent;
+  color: var(--sc-muted);
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: none;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.sc-btn-nav:hover {
+  border-color: var(--sc-accent);
+  color: var(--sc-accent);
+  background: var(--sc-accent-light);
+}
+
+/* Dark mode toggle */
+.sc-dark-toggle {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1.5px solid var(--sc-border);
+  background: var(--sc-surface-2);
+  color: var(--sc-muted);
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.sc-dark-toggle:hover {
+  border-color: var(--sc-accent);
+  color: var(--sc-accent);
+}
+
+/* ── Wrapper ── */
+.sc-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 32px 120px;
+}
+
+/* ── Header ── */
+.sc-header {
+  margin-bottom: 40px;
+}
+
+.sc-header-eyebrow {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sc-accent);
+  background: var(--sc-accent-light);
+  border: 1px solid var(--sc-accent-glow);
+  padding: 4px 12px;
+  border-radius: 99px;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+.sc-header h1 {
+  font-size: 1.9rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--sc-ink);
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+
+.sc-header p {
+  color: var(--sc-muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+/* ── Progress bar ── */
+.progress-bar-wrap {
+  margin-bottom: 40px;
+  background: var(--sc-surface);
+  border: 1px solid var(--sc-border);
+  border-radius: 14px;
+  padding: 20px 24px;
+  box-shadow: var(--sc-shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.progress-bar-inner { flex: 1; }
+
+.progress-bar-track {
+  height: 6px;
+  background: var(--sc-progress-bg);
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--sc-accent), color-mix(in srgb, var(--sc-accent) 70%, #86efac));
+  border-radius: 99px;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-bar-label {
+  font-size: 0.8rem;
+  color: var(--sc-muted);
+  font-weight: 500;
+}
+
+.progress-pct {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--sc-accent);
+  line-height: 1;
+  flex-shrink: 0;
+  min-width: 52px;
+  text-align: right;
+}
+
+/* ── Section ── */
+.stage-section {
+  margin-bottom: 48px;
+}
+
+.stage-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  gap: 12px;
+}
+
+.stage-section-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.stage-section-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--sc-section-icon-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.stage-section-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sc-ink-2);
+}
+
+.btn-add-block {
+  font-size: 0.78rem;
+  padding: 7px 16px;
+  border: 1.5px solid var(--sc-border);
+  border-radius: 8px;
+  background: var(--sc-surface);
+  color: var(--sc-muted);
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 600;
+  transition: all 0.15s;
+  white-space: nowrap;
+  box-shadow: var(--sc-shadow-sm);
+}
+.btn-add-block:hover {
+  border-color: var(--sc-accent);
+  color: var(--sc-accent);
+  background: var(--sc-accent-light);
+  box-shadow: 0 2px 10px var(--sc-accent-glow);
+}
+
+/* ── Stage card ── */
+.stage-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.stage-card {
+  background: var(--sc-surface);
+  border: 1.5px solid var(--sc-border);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: var(--sc-shadow-sm);
+  transition: border-color 0.2s, box-shadow 0.2s, opacity 0.2s;
+  position: relative;
+}
+
+.stage-card.complete {
+  border-color: var(--sc-border);
+}
+
+.stage-card.open {
+  border-color: var(--sc-accent);
+  box-shadow: 0 0 0 3px var(--sc-accent-glow), var(--sc-shadow-md);
+}
+
+.stage-card:hover:not(.open) {
+  border-color: var(--sc-border-2);
+  box-shadow: var(--sc-shadow-md);
+}
+
+/* Complete card left accent */
+.stage-card.complete::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--sc-complete-accent);
+  border-radius: 14px 0 0 14px;
+}
+
+.stage-card.dragging {
+  opacity: 0.4;
+  box-shadow: none;
+}
+
+.stage-card.drag-over-top {
+  border-top: 3px solid var(--sc-accent);
+  margin-top: -3px;
+}
+
+.stage-card.drag-over-bottom {
+  border-bottom: 3px solid var(--sc-accent);
+}
+
+/* ── Card header ── */
+.stage-card-header {
+  display: flex;
+  align-items: center;
+  padding: 16px 18px 16px 10px;
+  background: transparent;
+  gap: 0;
+}
+
+.drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  flex-shrink: 0;
+  cursor: grab;
+  color: var(--sc-drag-color);
+  font-size: 1rem;
+  letter-spacing: -2px;
+  transition: color 0.15s;
+  padding: 0 4px;
+  user-select: none;
+}
+.drag-handle:hover { color: var(--sc-muted); }
+.drag-handle:active { cursor: grabbing; }
+.stage-cards.single-block .drag-handle { visibility: hidden; cursor: default; }
+
+.stage-card-header-clickable {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 14px;
+  cursor: pointer;
+  min-width: 0;
+}
+
+.stage-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--sc-num-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--sc-muted);
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.stage-card.complete .stage-num {
+  background: var(--sc-num-done-bg);
+  border-color: var(--sc-num-done-bg);
+  color: var(--sc-badge-done-color);
+}
+
+.stage-title-group { min-width: 0; }
+.stage-title {
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--sc-ink);
+  transition: color 0.15s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.stage-card-header-clickable:hover .stage-title { color: var(--sc-accent); }
+.stage-subtitle {
+  font-size: 0.78rem;
+  color: var(--sc-muted);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stage-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 12px;
+  flex-shrink: 0;
+}
+
+.badge {
+  font-size: 0.72rem;
+  padding: 4px 11px;
+  border-radius: 99px;
+  border: 1px solid var(--sc-border);
+  color: var(--sc-muted);
+  background: var(--sc-badge-bg);
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.badge-done {
+  background: var(--sc-badge-done-bg);
+  border-color: var(--sc-badge-done-bg);
+  color: var(--sc-badge-done-color);
+  font-weight: 600;
+}
+
+.stage-chevron {
+  font-size: 0.72rem;
+  color: var(--sc-muted);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.stage-card.open .stage-chevron { transform: rotate(180deg); }
+
+.btn-remove-block {
+  font-size: 0.72rem;
+  padding: 4px 11px;
+  border: 1px solid var(--sc-border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--sc-muted);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+  white-space: nowrap;
+  font-weight: 500;
+}
+.btn-remove-block:hover {
+  border-color: var(--sc-red);
+  color: var(--sc-red);
+  background: var(--sc-red-bg);
+}
+
+/* ── Summary row ── */
+.stage-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  padding: 12px 22px 14px;
+  background: var(--sc-summary-bg);
+  border-top: 1px solid var(--sc-border);
+}
+.summary-item {
+  font-size: 0.82rem;
+  color: var(--sc-muted);
+}
+.summary-item strong {
+  color: var(--sc-ink);
+  font-weight: 600;
+}
+
+/* ── Form body ── */
+.stage-form-body {
+  display: none;
+  padding: 20px 22px 22px;
+  border-top: 1px solid var(--sc-border);
+  background: var(--sc-surface);
+}
+.stage-card.open .stage-form-body { display: block; }
+
+.stage-hint {
+  font-size: 0.82rem;
+  color: var(--sc-muted);
+  margin: 0 0 18px;
+  line-height: 1.6;
+  padding: 12px 14px;
+  background: var(--sc-hint-bg);
+  border: 1px solid var(--sc-hint-border);
+  border-radius: 8px;
+  border-left: 3px solid var(--sc-accent);
+}
+
+/* Form elements inherit global styles from style.css but we patch colors */
+.stage-form-body .form-input {
+  background: var(--sc-surface);
+  border-color: var(--sc-border);
+  color: var(--sc-ink);
+}
+.stage-form-body .form-input:focus {
+  border-color: var(--sc-accent);
+  box-shadow: 0 0 0 3px var(--sc-accent-glow);
+}
+.stage-form-body .form-label {
+  color: var(--sc-ink-2);
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--sc-border);
+}
+
+.stage-form-body .btn-primary {
+  background: var(--sc-accent);
+  border-color: var(--sc-accent);
+  color: #fff;
+}
+.stage-form-body .btn-primary:hover {
+  background: color-mix(in srgb, var(--sc-accent) 85%, #000);
+  border-color: color-mix(in srgb, var(--sc-accent) 85%, #000);
+  color: #fff;
+}
+.stage-form-body .btn-outline {
+  border-color: var(--sc-border);
+  color: var(--sc-muted);
+  background: transparent;
+}
+.stage-form-body .btn-outline:hover {
+  border-color: var(--sc-accent);
+  color: var(--sc-accent);
+}
+
+/* ── Divider ── */
+.section-divider {
+  border: none;
+  border-top: 1px solid var(--sc-divider);
+  margin: 0 0 48px;
+}
+
+/* ── Sequence label ── */
+.sequence-label {
+  font-size: 0.7rem;
+  color: var(--sc-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  padding-left: 2px;
+  font-weight: 500;
+}
+
+/* ── Toast ── */
+.reorder-toast {
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--sc-ink);
+  color: var(--sc-bg);
+  padding: 10px 22px;
+  border-radius: 99px;
+  font-size: 0.83rem;
+  font-weight: 500;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  z-index: 999;
+  box-shadow: var(--sc-shadow-lg);
+}
+.reorder-toast.show { opacity: 1; }
+
+/* ── Sticky generate bar ── */
+.sc-generate-bar {
+  position: sticky;
+  bottom: 0;
+  background: var(--sc-sticky-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--sc-border);
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  z-index: 200;
+}
+
+.sc-generate-hint {
+  font-size: 0.85rem;
+  color: var(--sc-muted);
+  line-height: 1.5;
+}
+.sc-generate-hint strong { color: var(--sc-ink); font-weight: 600; }
+
+.sc-bar-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.btn-generate {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 26px;
+  background: var(--sc-accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  text-decoration: none;
+  box-shadow: 0 4px 14px var(--sc-accent-glow);
+}
+.btn-generate:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px var(--sc-accent-glow);
+  color: #fff;
+}
+.btn-generate:active { transform: none; }
+
+{% if product.carbon_card %}
+.btn-view-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 20px;
+  background: transparent;
+  color: var(--sc-accent);
+  border: 1.5px solid var(--sc-accent);
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn-view-card:hover {
+  background: var(--sc-accent-light);
+  color: var(--sc-accent);
+}
+{% endif %}
+
+/* ══════════════════════════════════════
+   MODAL — Premium styled
+   ══════════════════════════════════════ */
+.sc-modal-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--sc-modal-overlay);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 24px;
+}
+.sc-modal-backdrop.open { display: flex; }
+
+.sc-modal {
+  background: var(--sc-surface);
+  border: 1px solid var(--sc-border);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 560px;
+  max-height: 88vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: var(--sc-shadow-lg);
+  animation: modalIn 0.22s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.95) translateY(12px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Modal header */
+.sc-modal-header {
+  padding: 28px 28px 20px;
+  border-bottom: 1px solid var(--sc-border);
+  position: relative;
+}
+
+.sc-modal-close {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  width: 32px;
+  height: 32px;
+  background: var(--sc-surface-2);
+  border: 1px solid var(--sc-border);
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: var(--sc-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: all 0.15s;
+}
+.sc-modal-close:hover {
+  background: var(--sc-red-bg);
+  border-color: var(--sc-red);
+  color: var(--sc-red);
+}
+
+.sc-modal-icon {
+  width: 44px;
+  height: 44px;
+  background: var(--sc-accent-light);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  margin-bottom: 14px;
+}
+
+.sc-modal-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--sc-ink);
+  margin-bottom: 4px;
+}
+.sc-modal-subtitle {
+  font-size: 0.84rem;
+  color: var(--sc-muted);
+  line-height: 1.5;
+}
+
+/* Modal body */
+.sc-modal-body { padding: 20px 28px; }
+
+/* Stage previews */
+.sc-preview-stage {
+  display: flex;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--sc-border);
+  align-items: flex-start;
+}
+.sc-preview-stage:last-child { border-bottom: none; }
+
+.sc-preview-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  padding-top: 4px;
+}
+.sc-preview-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--sc-accent);
+  flex-shrink: 0;
+}
+.sc-preview-line {
+  width: 1px;
+  height: 100%;
+  min-height: 20px;
+  background: var(--sc-border);
+  margin-top: 5px;
+  flex: 1;
+}
+.sc-preview-type {
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sc-accent);
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.sc-preview-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--sc-ink);
+}
+.sc-preview-meta {
+  font-size: 0.78rem;
+  color: var(--sc-muted);
+  margin-top: 2px;
+}
+
+/* Modal warning */
+.sc-modal-warning {
+  background: var(--sc-amber-bg);
+  border: 1px solid var(--sc-amber-border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 0.82rem;
+  color: var(--sc-amber);
+  margin-top: 4px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  line-height: 1.5;
+}
+
+/* Modal footer */
+.sc-modal-footer {
+  padding: 16px 28px 24px;
+  border-top: 1px solid var(--sc-border);
+  background: var(--sc-summary-bg);
+  border-radius: 0 0 20px 20px;
+}
+
+.sc-modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.sc-modal-footer .btn {
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.sc-modal-footer .btn-outline {
+  border-color: var(--sc-border);
+  color: var(--sc-muted);
+  background: var(--sc-surface);
+}
+.sc-modal-footer .btn-outline:hover {
+  border-color: var(--sc-accent);
+  color: var(--sc-accent);
+}
+.sc-modal-footer .btn-primary {
+  background: var(--sc-accent);
+  border-color: var(--sc-accent);
+  color: #fff;
+}
+.sc-modal-footer .btn-primary:hover {
+  background: color-mix(in srgb, var(--sc-accent) 85%, #000);
+  border-color: color-mix(in srgb, var(--sc-accent) 85%, #000);
+  color: #fff;
+}
+
+.sc-loading {
+  display: none;
+  align-items: center;
+  gap: 12px;
+  color: var(--sc-muted);
+  font-size: 0.85rem;
+  justify-content: flex-end;
+}
+.sc-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2.5px solid var(--sc-border);
+  border-top-color: var(--sc-accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Flash messages ── */
+.flash-list { list-style: none; margin-bottom: 24px; }
+.flash {
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  font-size: 0.87rem;
+}
+.flash-success { background: var(--sc-accent-light); border: 1px solid var(--sc-accent-glow); color: var(--sc-accent); }
+.flash-error   { background: var(--sc-red-bg); border: 1px solid var(--sc-border); color: var(--sc-red); }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .sc-wrapper { padding: 28px 18px 100px; }
+  .sc-nav { padding: 0 18px; }
+  .sc-header h1 { font-size: 1.5rem; }
+  .field-row { grid-template-columns: 1fr; }
+  .progress-bar-wrap { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .progress-pct { text-align: left; }
+  .sc-generate-bar { padding: 14px 18px; flex-direction: column; align-items: stretch; gap: 10px; }
+  .sc-bar-actions { flex-direction: column; }
+  .btn-generate, .btn-view-card { text-align: center; justify-content: center; }
+  .sc-modal { border-radius: 16px; }
+  .sc-modal-header, .sc-modal-body, .sc-modal-footer { padding-left: 18px; padding-right: 18px; }
+  .stage-header-right { gap: 6px; }
+  .badge { display: none; }
+  .sc-modal-actions { flex-direction: column-reverse; }
+  .sc-modal-actions .btn { width: 100%; justify-content: center; }
+}
+
+@media (max-width: 400px) {
+  .sc-nav-brand { font-size: 0.9rem; }
+  .sc-dark-toggle { width: 30px; height: 30px; font-size: 0.85rem; }
+}
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="sc-page" id="scPage">
+
+<nav class="sc-nav">
+  <a href="{{ url_for('main.home') }}" class="sc-nav-brand">⬡ GreenProof</a>
+  <div class="sc-nav-right">
+    <a href="{{ url_for('main.dashboard') }}" class="sc-btn-nav">← Dashboard</a>
+    <button class="sc-dark-toggle" onclick="toggleDark()" id="darkToggle" title="Toggle dark mode" aria-label="Toggle dark mode">🌙</button>
+  </div>
+</nav>
+
+<div class="sc-wrapper">
+
+  <div class="sc-header">
+    <div class="sc-header-eyebrow">Supply Chain Builder</div>
+    <h1>{{ product.name }}</h1>
+    <p>{% if product.description %}{{ product.description }} &nbsp;·&nbsp; {% endif %}Map every stage of your product's journey to generate an accurate carbon card.</p>
+  </div>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <ul class="flash-list">
+        {% for category, message in messages %}
+          <li class="flash flash-{{ category }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
+  <!-- Progress bar -->
+  {% set total_stages    = product.stages | length %}
+  {% set complete_stages = product.stages | selectattr('is_complete') | list | length %}
+  {% set pct = ((complete_stages / total_stages) * 100) | int if total_stages > 0 else 0 %}
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-inner">
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" style="width:{{ pct }}%"></div>
+      </div>
+      <span class="progress-bar-label">{{ complete_stages }} of {{ total_stages }} stages complete</span>
+    </div>
+    <div class="progress-pct">{{ pct }}%</div>
+  </div>
+
+
+  {# ── Reusable stage card macro ── #}
+  {% macro stage_card(stage, loop_index, can_remove, section_type) %}
+  <div class="stage-card {% if stage.is_complete %}complete{% endif %}"
+       id="stage-{{ stage.id }}"
+       draggable="true"
+       data-stage-id="{{ stage.id }}"
+       data-stage-type="{{ section_type }}">
+
+    <div class="stage-card-header">
+      <div class="drag-handle" title="Drag to reorder">⠿</div>
+
+      <div class="stage-card-header-clickable"
+           onclick="toggleStage('stage-{{ stage.id }}')">
+        <div class="stage-num">{% if stage.is_complete %}✓{% else %}{{ loop_index }}{% endif %}</div>
+        <div class="stage-title-group">
+          <div class="stage-title">
+            {% if section_type == 'raw_material' %}{{ stage.name or 'Unnamed material' }}
+            {% elif section_type == 'processing' %}{{ stage.name or 'Unnamed process' }}
+            {% elif section_type == 'manufacturing' %}{{ stage.name or 'Unnamed facility' }}
+            {% else %}{{ stage.courier or 'Shipping details' }}
+            {% endif %}
+          </div>
+          {% if stage.origin %}
+            <div class="stage-subtitle">📍 {{ stage.origin }}</div>
+          {% elif section_type == 'shipping' and stage.dispatch_city %}
+            <div class="stage-subtitle">📍 Dispatches from {{ stage.dispatch_city }}</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="stage-header-right">
+        {% if can_remove %}
+        <form method="POST"
+              action="{{ url_for('products.supply_chain', product_id=product.id) }}"
+              style="display:inline;"
+              onclick="event.stopPropagation()">
+          <input type="hidden" name="action"   value="delete_block" />
+          <input type="hidden" name="stage_id" value="{{ stage.id }}" />
+          <button type="submit" class="btn-remove-block"
+                  onclick="return confirm('Remove this block?')">Remove</button>
+        </form>
+        {% endif %}
+        <span class="badge {% if stage.is_complete %}badge-done{% endif %}">
+          {% if stage.is_complete %}✓ Done{% else %}Incomplete{% endif %}
+        </span>
+        <span class="stage-chevron" onclick="toggleStage('stage-{{ stage.id }}')">▼</span>
+      </div>
+    </div>
+
+    {% if stage.is_complete %}
+    <div class="stage-summary">
+      {% if section_type == 'shipping' %}
+        {% if stage.courier        %}<div class="summary-item"><strong>Courier:</strong> {{ stage.courier }}</div>{% endif %}
+        {% if stage.shipping_type  %}<div class="summary-item"><strong>Type:</strong> {{ stage.shipping_type }}</div>{% endif %}
+        {% if stage.dispatch_city  %}<div class="summary-item"><strong>From:</strong> {{ stage.dispatch_city }}</div>{% endif %}
+        {% if stage.shipping_zones %}<div class="summary-item"><strong>Ships to:</strong> {{ stage.shipping_zones }}</div>{% endif %}
+      {% else %}
+        {% if stage.name           %}<div class="summary-item"><strong>Name:</strong> {{ stage.name }}</div>{% endif %}
+        {% if stage.origin         %}<div class="summary-item"><strong>Location:</strong> {{ stage.origin }}</div>{% endif %}
+        {% if stage.transport_mode %}<div class="summary-item"><strong>Transport:</strong> {{ stage.transport_mode }}</div>{% endif %}
+        {% if stage.distance_km    %}<div class="summary-item"><strong>Distance:</strong> {{ stage.distance_km }} km</div>{% endif %}
+      {% endif %}
+      {% if stage.description %}<div class="summary-item" style="width:100%;"><strong>Notes:</strong> {{ stage.description }}</div>{% endif %}
+    </div>
+    {% endif %}
+
+    <div class="stage-form-body">
+
+      {% if section_type == 'raw_material' %}
+      <div class="stage-hint">What is this material, where does it come from, and how does it get to the next step?</div>
+      <form method="POST" action="{{ url_for('products.supply_chain', product_id=product.id) }}">
+        <input type="hidden" name="action"   value="save" />
+        <input type="hidden" name="stage_id" value="{{ stage.id }}" />
+        <div class="form-group">
+          <label class="form-label">Material name</label>
+          <input class="form-input" type="text" name="name"
+                 value="{{ stage.name or '' }}" placeholder="e.g. Organic Cotton" />
+        </div>
+        <div class="field-row">
+          <div class="form-group">
+            <label class="form-label">Origin / Source location</label>
+            <input class="form-input" type="text" name="origin"
+                   value="{{ stage.origin or '' }}" placeholder="e.g. Tamil Nadu, India" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Transport to next stage</label>
+            <select class="form-input" name="transport_mode">
+              <option value="">— Select —</option>
+              {% for opt in ['Road Freight', 'Sea Freight', 'Air Freight', 'Rail Freight'] %}
+              <option value="{{ opt }}" {% if stage.transport_mode == opt %}selected{% endif %}>{{ opt }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="form-group" style="max-width:200px;">
+          <label class="form-label">Distance (km)</label>
+          <input class="form-input" type="number" min="0" step="0.1" name="distance_km"
+                 value="{{ stage.distance_km or '' }}" placeholder="e.g. 180" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Additional notes</label>
+          <textarea class="form-input form-textarea" name="description" rows="2"
+                    placeholder="Certifications, farming practices...">{{ stage.description or '' }}</textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-outline"
+                  onclick="toggleStage('stage-{{ stage.id }}')">Cancel</button>
+        </div>
+      </form>
+
+      {% elif section_type == 'processing' %}
+      <div class="stage-hint">Describe this processing step — spinning, weaving, cutting, dyeing, treating, etc. Drag to reorder steps.</div>
+      <form method="POST" action="{{ url_for('products.supply_chain', product_id=product.id) }}">
+        <input type="hidden" name="action"   value="save" />
+        <input type="hidden" name="stage_id" value="{{ stage.id }}" />
+        <div class="form-group">
+          <label class="form-label">Process name</label>
+          <input class="form-input" type="text" name="name"
+                 value="{{ stage.name or '' }}" placeholder="e.g. Ring Spinning" />
+        </div>
+        <div class="field-row">
+          <div class="form-group">
+            <label class="form-label">Location</label>
+            <input class="form-input" type="text" name="origin"
+                   value="{{ stage.origin or '' }}" placeholder="e.g. Coimbatore, India" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Transport to next stage</label>
+            <select class="form-input" name="transport_mode">
+              <option value="">— Select —</option>
+              {% for opt in ['Road Freight', 'Rail Freight', 'On-site', 'None'] %}
+              <option value="{{ opt }}" {% if stage.transport_mode == opt %}selected{% endif %}>{{ opt }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="form-group" style="max-width:200px;">
+          <label class="form-label">Distance to next stage (km)</label>
+          <input class="form-input" type="number" min="0" step="0.1" name="distance_km"
+                 value="{{ stage.distance_km or '' }}" placeholder="e.g. 60" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Additional notes</label>
+          <textarea class="form-input form-textarea" name="description" rows="2"
+                    placeholder="Any extra details...">{{ stage.description or '' }}</textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-outline"
+                  onclick="toggleStage('stage-{{ stage.id }}')">Cancel</button>
+        </div>
+      </form>
+
+      {% elif section_type == 'manufacturing' %}
+      <div class="stage-hint">Where is this product assembled or finished? Drag to reorder if multiple facilities are involved.</div>
+      <form method="POST" action="{{ url_for('products.supply_chain', product_id=product.id) }}">
+        <input type="hidden" name="action"   value="save" />
+        <input type="hidden" name="stage_id" value="{{ stage.id }}" />
+        <div class="form-group">
+          <label class="form-label">Manufacturer / Factory name</label>
+          <input class="form-input" type="text" name="name"
+                 value="{{ stage.name or '' }}" placeholder="e.g. Tirupur Garments Ltd" />
+        </div>
+        <div class="field-row">
+          <div class="form-group">
+            <label class="form-label">Location</label>
+            <input class="form-input" type="text" name="origin"
+                   value="{{ stage.origin or '' }}" placeholder="e.g. Tirupur, India" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">How goods leave this facility</label>
+            <select class="form-input" name="transport_mode">
+              <option value="">— Select —</option>
+              {% for opt in ['Road Freight', 'Rail Freight', 'Sea Freight', 'Air Freight'] %}
+              <option value="{{ opt }}" {% if stage.transport_mode == opt %}selected{% endif %}>{{ opt }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="form-group" style="max-width:200px;">
+          <label class="form-label">Distance to warehouse (km)</label>
+          <input class="form-input" type="number" min="0" step="0.1" name="distance_km"
+                 value="{{ stage.distance_km or '' }}" placeholder="e.g. 300" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Additional notes</label>
+          <textarea class="form-input form-textarea" name="description" rows="2"
+                    placeholder="Certifications, working conditions...">{{ stage.description or '' }}</textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-outline"
+                  onclick="toggleStage('stage-{{ stage.id }}')">Cancel</button>
+        </div>
+      </form>
+
+      {% elif section_type == 'shipping' %}
+      <div class="stage-hint">
+        Tell us how you ship to customers — your courier partner, dispatch location, and the regions you serve.
+      </div>
+      <form method="POST" action="{{ url_for('products.supply_chain', product_id=product.id) }}">
+        <input type="hidden" name="action"   value="save" />
+        <input type="hidden" name="stage_id" value="{{ stage.id }}" />
+        <div class="field-row">
+          <div class="form-group">
+            <label class="form-label">Courier / Logistics partner</label>
+            <input class="form-input" type="text" name="courier"
+                   value="{{ stage.courier or '' }}"
+                   placeholder="e.g. DHL, FedEx, BlueDart" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Shipping type</label>
+            <select class="form-input" name="shipping_type">
+              <option value="">— Select —</option>
+              {% for opt in ['Standard Courier', 'Express Courier', 'Freight (Bulk / B2B)', 'Hyperlocal / Same-day', 'Click & Collect'] %}
+              <option value="{{ opt }}" {% if stage.shipping_type == opt %}selected{% endif %}>{{ opt }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="form-group">
+            <label class="form-label">Dispatch city / Warehouse</label>
+            <input class="form-input" type="text" name="dispatch_city"
+                   value="{{ stage.dispatch_city or '' }}" placeholder="e.g. Mumbai, India" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Regions you ship to</label>
+            <select class="form-input" name="shipping_zones">
+              <option value="">— Select —</option>
+              {% for opt in ['Domestic only', 'International only', 'Domestic + International', 'Within city only', 'Within state only'] %}
+              <option value="{{ opt }}" {% if stage.shipping_zones == opt %}selected{% endif %}>{{ opt }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Additional notes</label>
+          <textarea class="form-input form-textarea" name="description" rows="2"
+                    placeholder="Packaging type, returns policy, average delivery time...">{{ stage.description or '' }}</textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-outline"
+                  onclick="toggleStage('stage-{{ stage.id }}')">Cancel</button>
+        </div>
+      </form>
+      {% endif %}
+
+    </div>
+  </div>
+  {% endmacro %}
+
+
+  {# ── RAW MATERIAL ── #}
+  <div class="stage-section">
+    <div class="stage-section-header">
+      <div class="stage-section-title-wrap">
+        <div class="stage-section-icon">🌾</div>
+        <span class="stage-section-title">Raw Material</span>
+      </div>
+      <form method="POST" action="{{ url_for('products.supply_chain', product_id=product.id) }}" style="display:inline;">
+        <input type="hidden" name="action" value="add_block" />
+        <input type="hidden" name="stage_type" value="raw_material" />
+        <button type="submit" class="btn-add-block">+ Add material</button>
+      </form>
+    </div>
+    {% set stages_list = stages_grouped['raw_material'] %}
+    {% if stages_list | length > 1 %}
+      <p class="sequence-label">Drag ⠿ to reorder</p>
+    {% endif %}
+    <div class="stage-cards {% if stages_list | length == 1 %}single-block{% endif %}"
+         data-section="raw_material"
+         data-reorder-url="{{ url_for('products.reorder', product_id=product.id) }}">
+      {% for stage in stages_list %}
+        {{ stage_card(stage, loop.index, stages_list | length > 1, 'raw_material') }}
+      {% endfor %}
+    </div>
+  </div>
+
+  <hr class="section-divider" />
+
+  {# ── PROCESSING ── #}
+  <div class="stage-section">
+    <div class="stage-section-header">
+      <div class="stage-section-title-wrap">
+        <div class="stage-section-icon">⚙️</div>
+        <span class="stage-section-title">Processing</span>
+      </div>
+      <form method="POST" action="{{ url_for('products.supply_chain', product_id=product.id) }}" style="display:inline;">
+        <input type="hidden" name="action" value="add_block" />
+        <input type="hidden" name="stage_type" value="processing" />
+        <button type="submit" class="btn-add-block">+ Add processing step</button>
+      </form>
+    </div>
+    {% set stages_list = stages_grouped['processing'] %}
+    {% if stages_list | length > 1 %}
+      <p class="sequence-label">Drag ⠿ to reorder — sequence matters here</p>
+    {% endif %}
+    <div class="stage-cards {% if stages_list | length == 1 %}single-block{% endif %}"
+         data-section="processing"
+         data-reorder-url="{{ url_for('products.reorder', product_id=product.id) }}">
+      {% for stage in stages_list %}
+        {{ stage_card(stage, loop.index, stages_list | length > 1, 'processing') }}
+      {% endfor %}
+    </div>
+  </div>
+
+  <hr class="section-divider" />
+
+  {# ── MANUFACTURING ── #}
+  <div class="stage-section">
+    <div class="stage-section-header">
+      <div class="stage-section-title-wrap">
+        <div class="stage-section-icon">🏭</div>
+        <span class="stage-section-title">Manufacturing</span>
+      </div>
+      <form method="POST" action="{{ url_for('products.supply_chain', product_id=product.id) }}" style="display:inline;">
+        <input type="hidden" name="action" value="add_block" />
+        <input type="hidden" name="stage_type" value="manufacturing" />
+        <button type="submit" class="btn-add-block">+ Add manufacturing step</button>
+      </form>
+    </div>
+    {% set stages_list = stages_grouped['manufacturing'] %}
+    {% if stages_list | length > 1 %}
+      <p class="sequence-label">Drag ⠿ to reorder</p>
+    {% endif %}
+    <div class="stage-cards {% if stages_list | length == 1 %}single-block{% endif %}"
+         data-section="manufacturing"
+         data-reorder-url="{{ url_for('products.reorder', product_id=product.id) }}">
+      {% for stage in stages_list %}
+        {{ stage_card(stage, loop.index, stages_list | length > 1, 'manufacturing') }}
+      {% endfor %}
+    </div>
+  </div>
+
+  <hr class="section-divider" />
+
+  {# ── SHIPPING ── #}
+  <div class="stage-section">
+    <div class="stage-section-header">
+      <div class="stage-section-title-wrap">
+        <div class="stage-section-icon">📦</div>
+        <span class="stage-section-title">Shipping</span>
+      </div>
+    </div>
+    <div class="stage-cards single-block"
+         data-section="shipping"
+         data-reorder-url="{{ url_for('products.reorder', product_id=product.id) }}">
+      {% for stage in stages_grouped['shipping'] %}
+        {{ stage_card(stage, loop.index, false, 'shipping') }}
+      {% endfor %}
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Sticky Generate Bar ── -->
+<div class="sc-generate-bar">
+  <div class="sc-generate-hint">
+    {% set complete = product.stages | selectattr('is_complete') | list | length %}
+    {% set total = product.stages | length %}
+    {% if complete == total and total > 0 %}
+      <strong>All {{ total }} stages complete.</strong> Ready to generate your carbon card.
+    {% else %}
+      <strong>{{ complete }}/{{ total }} stages complete.</strong> Complete all stages for the most accurate analysis.
+    {% endif %}
+  </div>
+  <div class="sc-bar-actions">
+    {% if product.carbon_card %}
+      <a href="{{ url_for('carbon_card.view', product_id=product.id) }}" class="btn-view-card">
+        🌿 View Carbon Card
+      </a>
+    {% endif %}
+    <button class="btn-generate" onclick="openPreviewModal()">
+      ✦ Generate Carbon Card
+    </button>
+  </div>
+</div>
+
+<!-- ── Preview Modal ── -->
+<div class="sc-modal-backdrop" id="scModalBackdrop" onclick="handleBackdropClick(event)">
+  <div class="sc-modal" id="scModal">
+    <div class="sc-modal-header">
+      <button class="sc-modal-close" onclick="closePreviewModal()" aria-label="Close">×</button>
+      <div class="sc-modal-icon">🌿</div>
+      <div class="sc-modal-title">Review your supply chain</div>
+      <div class="sc-modal-subtitle" id="sc-modal-subtitle">
+        Confirm the data below before sending to the AI for carbon analysis.
+      </div>
+    </div>
+
+    <div class="sc-modal-body">
+      <div id="sc-preview-stages"></div>
+      <div id="sc-modal-warning" class="sc-modal-warning" style="display:none;">
+        ⚠️ <span id="sc-warning-text"></span>
+      </div>
+    </div>
+
+    <div class="sc-modal-footer">
+      <div class="sc-modal-actions" id="sc-modal-actions">
+        <button class="btn btn-outline" onclick="closePreviewModal()">Cancel</button>
+        <form method="POST" action="{{ url_for('carbon_card.generate', product_id=product.id) }}"
+              id="sc-confirm-form" onsubmit="showLoading()">
+          <button type="submit" class="btn btn-primary">
+            Confirm &amp; Analyse →
+          </button>
+        </form>
+      </div>
+      <div class="sc-loading" id="sc-loading">
+        <div class="sc-spinner"></div>
+        <span>Sending to local AI model… this may take 30–60 seconds.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="reorder-toast" id="reorder-toast">Order saved</div>
+
+</div>{# /sc-page #}
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+// ── Dark mode toggle ──────────────────────────────────────────────
+const page = document.getElementById('scPage');
+const toggleBtn = document.getElementById('darkToggle');
+const DARK_KEY = 'sc_dark_mode';
+
+function applyDark(on) {
+  if (on) {
+    page.classList.add('dark-mode');
+    toggleBtn.textContent = '☀️';
+  } else {
+    page.classList.remove('dark-mode');
+    toggleBtn.textContent = '🌙';
+  }
+}
+
+// Init from saved pref or system
+(function() {
+  const saved = localStorage.getItem(DARK_KEY);
+  if (saved !== null) {
+    applyDark(saved === '1');
+  } else {
+    applyDark(window.matchMedia('(prefers-color-scheme: dark)').matches);
+  }
+})();
+
+function toggleDark() {
+  const isDark = page.classList.contains('dark-mode');
+  applyDark(!isDark);
+  localStorage.setItem(DARK_KEY, isDark ? '0' : '1');
+}
+
+// ── Toggle open/close ─────────────────────────────────────────────
+function toggleStage(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const first = document.querySelector('.stage-card:not(.complete)');
+  if (first) first.classList.add('open');
+});
+
+
+// ── Drag and drop reorder ─────────────────────────────────────────
+let dragCard    = null;
+let dragSection = null;
+
+document.querySelectorAll('.stage-cards').forEach(list => {
+  enableDragDrop(list);
+});
+
+function enableDragDrop(list) {
+  const section    = list.dataset.section;
+  const reorderUrl = list.dataset.reorderUrl;
+
+  list.querySelectorAll('.stage-card').forEach(card => {
+    card.addEventListener('dragstart', e => {
+      if (!e.target.closest('.drag-handle') && e.target !== card) {
+        const handle = card.querySelector('.drag-handle');
+        if (!e.composedPath().includes(handle)) { e.preventDefault(); return; }
+      }
+      dragCard    = card;
+      dragSection = list;
+      const ghost = card.cloneNode(true);
+      ghost.style.cssText = 'position:absolute;top:-9999px;opacity:0.8;width:' + card.offsetWidth + 'px;';
+      document.body.appendChild(ghost);
+      e.dataTransfer.setDragImage(ghost, 20, 20);
+      setTimeout(() => document.body.removeChild(ghost), 0);
+      e.dataTransfer.effectAllowed = 'move';
+      setTimeout(() => card.classList.add('dragging'), 0);
+    });
+
+    card.addEventListener('dragend', () => {
+      card.classList.remove('dragging');
+      list.querySelectorAll('.drag-over-top, .drag-over-bottom').forEach(el => {
+        el.classList.remove('drag-over-top', 'drag-over-bottom');
+      });
+      dragCard = dragSection = null;
+    });
+
+    card.addEventListener('dragover', e => {
+      e.preventDefault();
+      if (!dragCard || dragCard === card || dragSection !== list) return;
+      e.dataTransfer.dropEffect = 'move';
+      const rect = card.getBoundingClientRect();
+      const isTop = e.clientY < rect.top + rect.height / 2;
+      list.querySelectorAll('.drag-over-top, .drag-over-bottom').forEach(el => {
+        el.classList.remove('drag-over-top', 'drag-over-bottom');
+      });
+      card.classList.add(isTop ? 'drag-over-top' : 'drag-over-bottom');
+    });
+
+    card.addEventListener('dragleave', () => {
+      card.classList.remove('drag-over-top', 'drag-over-bottom');
+    });
+
+    card.addEventListener('drop', e => {
+      e.preventDefault();
+      if (!dragCard || dragCard === card || dragSection !== list) return;
+      card.classList.remove('drag-over-top', 'drag-over-bottom');
+      const isTop = e.clientY < card.getBoundingClientRect().top + card.getBoundingClientRect().height / 2;
+      if (isTop) list.insertBefore(dragCard, card);
+      else list.insertBefore(dragCard, card.nextSibling);
+      updateStepNumbers(list);
+      saveOrder(list, section, reorderUrl);
+    });
+  });
+}
+
+function updateStepNumbers(list) {
+  list.querySelectorAll('.stage-card').forEach((card, i) => {
+    const num = card.querySelector('.stage-num');
+    if (num && !card.classList.contains('complete')) num.textContent = i + 1;
+  });
+}
+
+function saveOrder(list, section, reorderUrl) {
+  const ids = [...list.querySelectorAll('.stage-card')].map(c => parseInt(c.dataset.stageId));
+  fetch(reorderUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ stage_type: section, order: ids })
+  })
+  .then(r => r.json())
+  .then(d => { if (d.ok) showToast('Order saved'); })
+  .catch(() => showToast('Could not save order'));
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('reorder-toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2200);
+}
+
+// ── Preview Modal ─────────────────────────────────────────────────
+async function openPreviewModal() {
+  const backdrop  = document.getElementById('scModalBackdrop');
+  const stagesEl  = document.getElementById('sc-preview-stages');
+  const warningEl = document.getElementById('sc-modal-warning');
+  const warningTx = document.getElementById('sc-warning-text');
+  const subtitle  = document.getElementById('sc-modal-subtitle');
+
+  stagesEl.innerHTML = '<p style="color:var(--sc-muted);font-size:0.85rem;padding:12px 0;">Loading…</p>';
+  backdrop.classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  try {
+    const res  = await fetch('{{ url_for("carbon_card.preview_data", product_id=product.id) }}');
+    const data = await res.json();
+
+    const typeLabels = {
+      raw_material:  '🌾 Raw Material',
+      processing:    '⚙️ Processing',
+      manufacturing: '🏭 Manufacturing',
+      shipping:      '📦 Shipping',
+    };
+
+    stagesEl.innerHTML = data.stages.map((s, i, arr) => {
+      const type = typeLabels[s.stage_type] || s.stage_type;
+      const name = s.name || s.courier || 'Unnamed';
+      const loc  = s.origin || s.dispatch_city || '';
+      const transport = s.transport_mode || s.shipping_type || '';
+      const dist = s.distance_km ? ` · ${s.distance_km} km` : '';
+      const isLast = i === arr.length - 1;
+      return `
+        <div class="sc-preview-stage">
+          <div class="sc-preview-connector">
+            <div class="sc-preview-dot"></div>
+            ${!isLast ? '<div class="sc-preview-line"></div>' : ''}
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div class="sc-preview-type">${type}</div>
+            <div class="sc-preview-name">${name}</div>
+            ${loc || transport ? `<div class="sc-preview-meta">${loc}${transport ? ' · ' + transport : ''}${dist}</div>` : ''}
+          </div>
+        </div>`;
+    }).join('');
+
+    if (data.complete_stages < data.total_stages) {
+      const missing = data.total_stages - data.complete_stages;
+      warningTx.textContent = `${missing} stage${missing > 1 ? 's are' : ' is'} incomplete. The AI will still run but results may be less accurate.`;
+      warningEl.style.display = 'flex';
+    } else {
+      warningEl.style.display = 'none';
+    }
+
+    subtitle.textContent = data.has_card
+      ? 'A carbon card already exists. Confirming will regenerate it with the latest supply chain data.'
+      : 'Confirm the data below before sending to the AI for carbon analysis.';
+
+  } catch(e) {
+    stagesEl.innerHTML = '<p style="color:var(--sc-red);font-size:0.85rem;">Failed to load preview. Please try again.</p>';
+  }
+}
+
+function closePreviewModal() {
+  document.getElementById('scModalBackdrop').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function handleBackdropClick(e) {
+  if (e.target === document.getElementById('scModalBackdrop')) closePreviewModal();
+}
+
+function showLoading() {
+  document.getElementById('sc-modal-actions').style.display = 'none';
+  document.getElementById('sc-loading').style.display = 'flex';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closePreviewModal();
+});
+</script>
+{% endblock %}
