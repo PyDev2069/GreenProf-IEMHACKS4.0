@@ -1,0 +1,506 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --black:      #0a0a0a;
+  --dark:       #1a1a1a;
+  --mid:        #ffffff;
+  --light:      #d0d0d0;
+  --off-white:  #f5f5f3;
+  --white:      #ffffff;
+  --red:        #c0392b;
+  --green:      #1a6b3a;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--off-white);
+  color: var(--black);
+  line-height: 1.6;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--black);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+a:hover { color: var(--mid); }
+
+/* ── Layout ── */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ── Navbar ── */
+.navbar {
+  border-bottom: 1px solid var(--light);
+  background: var(--white);
+  padding: 0 24px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-brand {
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--black);
+  letter-spacing: -0.02em;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  list-style: none;
+}
+
+.navbar-links a {
+  font-size: 0.9rem;
+  text-decoration: none;
+  color: var(--mid);
+}
+
+.navbar-links a:hover { color: var(--black); }
+
+/* ── Buttons ── */
+.btn {
+  display: inline-block;
+  padding: 10px 24px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  font-family: inherit;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  border: 1.5px solid transparent;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  text-align: center;
+}
+
+.btn-primary {
+  background: var(--black);
+  color: var(--white);
+  border-color: var(--black);
+}
+
+.btn-primary:hover {
+  background: var(--dark);
+  border-color: var(--dark);
+  color: var(--white);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--black);
+  border-color: var(--light);
+}
+
+.btn-outline:hover {
+  border-color: var(--black);
+  color: var(--black);
+}
+
+.btn-full { width: 100%; }
+
+/* ── Flash messages ── */
+.flash-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px 0;
+}
+
+.flash {
+  padding: 10px 14px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.flash-error {
+  background: #fdf0ef;
+  border: 1px solid #f5c6c2;
+  color: var(--red);
+}
+
+.flash-success {
+  background: #edf7f1;
+  border: 1px solid #b7dfc8;
+  color: var(--green);
+}
+
+/* ── Forms ── */
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--dark);
+  margin-bottom: 6px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--black);
+  background: var(--white);
+  border: 1.5px solid var(--light);
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.form-input:focus {
+  border-color: var(--black);
+}
+
+.form-hint {
+  font-size: 0.8rem;
+  color: var(--mid);
+  margin-top: 5px;
+}
+
+/* ── Auth layout ── */
+.auth-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  background: var(--off-white);
+}
+
+.auth-card {
+  background: var(--white);
+  border: 1px solid var(--light);
+  border-radius: 6px;
+  padding: 40px 36px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.auth-card h1 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--black);
+  margin-bottom: 6px;
+}
+
+.auth-card .subtitle {
+  font-size: 0.9rem;
+  color: var(--mid);
+  margin-bottom: 28px;
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 0.875rem;
+  color: var(--mid);
+}
+
+.auth-footer a {
+  color: var(--black);
+}
+
+.forgot-link {
+  display: block;
+  text-align: right;
+  font-size: 0.8rem;
+  color: var(--mid);
+  margin-top: -10px;
+  margin-bottom: 18px;
+  text-decoration: none;
+}
+
+.forgot-link:hover { color: var(--black); }
+
+/* ── Home page ── */
+.hero {
+  padding: 100px 24px;
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.hero h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-bottom: 20px;
+}
+
+.hero p {
+  font-size: 1.05rem;
+  color: var(--mid);
+  margin-bottom: 36px;
+  line-height: 1.7;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.features {
+  border-top: 1px solid var(--light);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0;
+}
+
+.feature {
+  padding: 40px 32px;
+  border-right: 1px solid var(--light);
+}
+
+.feature:last-child { border-right: none; }
+
+.feature-num {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--light);
+  letter-spacing: 0.06em;
+  margin-bottom: 16px;
+}
+
+.feature h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.feature p {
+  font-size: 0.875rem;
+  color: var(--mid);
+  line-height: 1.6;
+}
+
+/* ── Dashboard ── */
+.dashboard-nav {
+  border-bottom: 1px solid var(--light);
+  background: var(--white);
+  padding: 0 32px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dashboard-nav .brand {
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  color: var(--black);
+}
+
+.dashboard-nav .nav-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 0.875rem;
+  color: var(--mid);
+}
+
+.dashboard-main {
+  padding: 64px 32px;
+  max-width: 900px;
+}
+
+.dashboard-main h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+.dashboard-main p {
+  color: var(--mid);
+  font-size: 0.95rem;
+}
+
+.placeholder-box {
+  margin-top: 40px;
+  border: 1.5px dashed var(--light);
+  border-radius: 6px;
+  padding: 64px 32px;
+  text-align: center;
+  color: var(--mid);
+  font-size: 0.9rem;
+}
+
+/* ── Info box (for sent states) ── */
+.info-box {
+  background: var(--white);
+  border: 1px solid var(--light);
+  border-radius: 4px;
+  padding: 20px;
+  font-size: 0.9rem;
+  color: var(--mid);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* ── Checkbox row ── */
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  color: var(--mid);
+  margin-bottom: 20px;
+}
+
+.checkbox-row input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--black);
+}
+
+/* ── Dashboard header ── */
+.dashboard-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.dashboard-header h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+
+.dashboard-header p {
+  color: var(--mid);
+  font-size: 0.9rem;
+}
+
+/* ── Product table ── */
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.product-table th {
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--mid);
+  padding: 10px 14px;
+  border-bottom: 1.5px solid var(--light);
+}
+
+.product-table td {
+  padding: 14px;
+  border-bottom: 1px solid var(--light);
+  vertical-align: middle;
+}
+
+.product-row {
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.product-row:hover { background: var(--off-white); }
+
+.product-name { font-weight: 500; color: var(--black); }
+
+.product-desc {
+  color: var(--mid);
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.product-date { color: var(--mid); white-space: nowrap; }
+
+/* ── Stage pills ── */
+.stage-pill-row  { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 4px; }
+
+.stage-pill {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 20px;
+  border: 1px solid var(--light);
+  color: var(--mid);
+  white-space: nowrap;
+}
+
+.stage-pill-done {
+  background: var(--black);
+  border-color: var(--black);
+  color: var(--white);
+}
+
+.stage-count { font-size: 0.75rem; color: var(--mid); }
+
+/* ── Delete button ── */
+.btn-delete {
+  font-size: 0.8rem;
+  color: var(--mid);
+  background: none;
+  border: 1px solid var(--light);
+  border-radius: 4px;
+  padding: 4px 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+
+.btn-delete:hover {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+/* ── Empty state ── */
+.empty-state {
+  text-align: center;
+  padding: 80px 32px;
+  color: var(--mid);
+  border: 1.5px dashed var(--light);
+  border-radius: 6px;
+}
+
+/* ── Form card ── */
+.form-card {
+  background: var(--white);
+  border: 1px solid var(--light);
+  border-radius: 6px;
+  padding: 32px;
+  max-width: 520px;
+}
+
+/* ── Textarea ── */
+.form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
