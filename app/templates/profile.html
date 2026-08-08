@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+{% block title %}Profile Settings — GreenProof{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<nav class="dashboard-nav">
+  <a href="{{ url_for('main.dashboard') }}" class="brand">
+    <span class="brand-icon">⬡</span> GreenProof
+  </a>
+
+  <div class="nav-right">
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <svg class="theme-icon theme-icon--sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg class="theme-icon theme-icon--moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+
+    <div class="profile-dropdown">
+      <button class="profile-trigger" id="profileTrigger" aria-haspopup="true" aria-expanded="false">
+        <span class="user-avatar">{{ user.name[0] | upper }}</span>
+        <span class="profile-name">{{ user.name }}</span>
+        <svg class="profile-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="profile-menu" id="profileMenu" role="menu">
+        <a href="{{ url_for('main.profile') }}" class="profile-menu-item" role="menuitem">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Settings
+        </a>
+        <a href="{{ url_for('auth.logout') }}" class="profile-menu-item profile-menu-item--danger" role="menuitem">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Log out
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main class="profile-main">
+
+  <div class="profile-header">
+    <a href="{{ url_for('main.dashboard') }}" class="profile-back">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Back to dashboard
+    </a>
+    <h1>Profile Settings</h1>
+    <p>Manage your account details and preferences.</p>
+  </div>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <ul class="flash-list">
+        {% for category, message in messages %}
+          <li class="flash flash-{{ category }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
+  <div class="profile-layout">
+
+    <!-- Left: avatar summary card -->
+    <aside class="profile-card">
+      <div class="profile-card-avatar">{{ user.name[0] | upper }}</div>
+      <h2>{{ user.name }}</h2>
+      <p>{{ user.email }}</p>
+      <span class="profile-badge">Active account</span>
+    </aside>
+
+    <!-- Right: editable form -->
+    <section class="profile-form-card">
+
+      <form method="POST" action="{{ url_for('main.profile') }}" novalidate>
+
+        <h3 class="profile-section-title">Personal information</h3>
+
+        <div class="profile-form-row">
+          <div class="form-group">
+            <label for="name">Full name</label>
+            <input type="text" id="name" name="name" value="{{ user.name }}" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email" id="email" name="email" value="{{ user.email }}" required>
+          </div>
+        </div>
+
+        <h3 class="profile-section-title">Change password</h3>
+
+        <div class="profile-form-row">
+          <div class="form-group">
+            <label for="current_password">Current password</label>
+            <input type="password" id="current_password" name="current_password" placeholder="••••••••">
+          </div>
+          <div class="form-group">
+            <label for="new_password">New password</label>
+            <input type="password" id="new_password" name="new_password" placeholder="Min. 8 characters">
+          </div>
+        </div>
+
+        <div class="profile-form-actions">
+          <button type="submit" class="btn-save">Save changes</button>
+        </div>
+
+      </form>
+
+      <div class="profile-danger-zone">
+        <div>
+          <h4>Delete account</h4>
+          <p>Permanently remove your account and all associated products.</p>
+        </div>
+        <button type="button" class="btn-danger" onclick="if(confirm('This will permanently delete your account. Continue?')){ document.getElementById('deleteAccountForm').submit(); }">
+          Delete account
+        </button>
+        <form id="deleteAccountForm" method="POST" action="{{ url_for('main.delete_account') }}" style="display:none;"></form>
+      </div>
+
+    </section>
+
+  </div>
+
+</main>
+
+<script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
+<script>
+  const cardEndpoints = {
+    start: (id) => `/carbon/generate/${id}`
+  };
+  GreenProofNotifications.init(cardEndpoints);
+</script>
+<script>
+(function(){
+  const trigger = document.getElementById('profileTrigger');
+  const menu = document.getElementById('profileMenu');
+  if(trigger && menu){
+    trigger.addEventListener('click', () => {
+      const open = menu.classList.toggle('open');
+      trigger.setAttribute('aria-expanded', open);
+    });
+    document.addEventListener('click', (e) => {
+      if(!trigger.contains(e.target) && !menu.contains(e.target)){
+        menu.classList.remove('open');
+        trigger.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  const toggle = document.getElementById('themeToggle');
+  const root = document.documentElement;
+  const saved = localStorage.getItem('greenproof-theme');
+  if(saved === 'dark'){ root.setAttribute('data-theme', 'dark'); }
+  toggle && toggle.addEventListener('click', () => {
+    const isDark = root.getAttribute('data-theme') === 'dark';
+    if(isDark){
+      root.removeAttribute('data-theme');
+      localStorage.setItem('greenproof-theme', 'light');
+    } else {
+      root.setAttribute('data-theme', 'dark');
+      localStorage.setItem('greenproof-theme', 'dark');
+    }
+  });
+})();
+</script>
+
+{% endblock %}
