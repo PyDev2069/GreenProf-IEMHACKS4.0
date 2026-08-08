@@ -1,4 +1,4 @@
-# 🌱 GreenProof — Sustainable Supply Chain Traceability
+# 🌱 GreenProf — Sustainable Supply Chain Traceability
 
 **GreenProof** is a sustainability platform designed to make product supply chains more **transparent, traceable, and eco-conscious**. 🌍  
 🔗 Track every stage — from **raw materials to processing, manufacturing, and shipping**.  
